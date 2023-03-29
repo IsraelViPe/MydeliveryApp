@@ -1,18 +1,13 @@
 import React from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import rockGlass from './images/rockGlass.svg';
-// Iniciando projeto
-// Criando a branch development
+import Login from './Pages/Login';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <span className="logo">TRYBE</span>
-      <object className="rocksGlass" type="image/svg+xml" data={ rockGlass }>
-        Glass
-      </object>
-    </div>
+    <Routes>
+      <Route path="/" element={ <Navigate to="/login" /> } />
+      <Route path="/login" element={ <Login /> } />
+    </Routes>
   );
 }
-
-export default App;
