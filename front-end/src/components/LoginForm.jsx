@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import postLogin from '../Services/RequestAPI';
 
 export default function LoginForm() {
@@ -9,7 +9,7 @@ export default function LoginForm() {
   const [errorMsg, setErrorMsg] = useState('');
   const [loginError, setLoginError] = useState(false);
 
-  const navigate = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
     const MIN_PASS_LENGTH = 6;
@@ -35,16 +35,16 @@ export default function LoginForm() {
 
       switch (data.role) {
       case 'costumer':
-        navigate('/customer/orders');
+        history.push('/customer/orders');
         break;
       case 'seller':
-        navigate('/seller/orders');
+        history.push('/seller/orders');
         break;
       case 'administator':
-        navigate('/admin/manage');
+        history.push('/admin/manage');
         break;
       default:
-        navigate('/login');
+        history.push('/login');
       }
     } catch (error) {
       const { message } = error;
@@ -89,7 +89,7 @@ export default function LoginForm() {
         <button
           type="button"
           data-testid="common_login__button-register"
-          onClick={ () => navigate('/register') }
+          onClick={ () => history.push('/register') }
         >
           Cadastrar
         </button>
