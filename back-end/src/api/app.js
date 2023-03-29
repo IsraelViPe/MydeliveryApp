@@ -1,12 +1,13 @@
 const express = require('express');
-const { User } = require('../database/models');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 app.get('/coffee', (_req, res) => res.status(418).end());
-app.get('/janta', async (_req, res) => {
-    const users = await User.findOne();
-    res.status(200).json(users);
-});
+app.use('/login', require('../routes/login.router'));
+app.use(require('../middlewares/errorHandler'));
 
 module.exports = app;
