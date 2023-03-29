@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import postLogin from '../Services/RequestAPI';
+import ErrorMessage from './ErrorMessage';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -94,8 +95,10 @@ export default function LoginForm() {
           Cadastrar
         </button>
         { loginError && (
-          <ErrorMessage ErrorMsg={errorMsg}  
-          dataTestid={"common_login__element-invalid-email"} />
+          <ErrorMessage
+            ErrorMsg={ errorMsg }
+            dataTestid="common_login__element-invalid-email"
+          />
         ) }
       </form>
     </div>
