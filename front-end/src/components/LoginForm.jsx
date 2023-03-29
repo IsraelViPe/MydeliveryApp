@@ -94,7 +94,8 @@ export default function LoginForm() {
           Cadastrar
         </button>
         { loginError && (
-          <h2 data-testid="common_login__element-invalid-email">{ errorMsg }</h2>
+          <ErrorMessage ErrorMsg={errorMsg}  
+          dataTestid={"common_login__element-invalid-email"} />
         ) }
       </form>
     </div>

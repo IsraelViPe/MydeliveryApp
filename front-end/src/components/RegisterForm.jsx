@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import ErrorMessage from './ErrorMessage';
 
 const MIN_CHAR = 6;
 const NAME_CHAR = 12;
@@ -11,7 +12,10 @@ export default function Register() {
   const [nameDisable, setNameDisable] = useState(true);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const [resgisterError, setRegisterError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState();
 
   const isButtonActive = () => {
     if (passwordDisable === false && emailDisable === false && nameDisable === false) {
@@ -21,11 +25,26 @@ export default function Register() {
     }
   };
 
-  const handleClick = () => {
+  async function handleClick() {
+    const body = {
+      name,
+      email,
+      password,
+      role: 'customer',
+    };
+    try {
+      setRegisterError(false);
+      await postRegister(body);
+    } catch (error) {
+      const { message } = error;
+      setRegisterError(true);
+      setErrorMsg(message);
+    }
     setRedirect(true);
-  };
+  }
 
   const passwordValidation = ({ target }) => {
+    setPassword(target.value);
     if (target.value.length > MIN_CHAR) {
       setPasswordDisable(false);
     } else {
@@ -54,19 +73,10 @@ export default function Register() {
     isButtonActive();
   };
 
-  // register = (name, email, password) => {
-  //   fetch("http://localhost:3306/register", { method: 'POST' })
-  //   .then(response => {
-  //     if(response.ok) {
-
-  //     }
-  //   })
-  // }
-
   return (
-    <section className="page-login">
+    <section className="page-register">
 
-      <div className="container-login">
+      <div className="container-register">
         <h2>Cadastro</h2>
         <form action="" className="form-register">
           <label htmlFor="nome-input" className="label-login">
@@ -100,6 +110,7 @@ export default function Register() {
             <input
               id="password-input"
               type="password"
+              value={ password }
               data-testid="common_register__input-password"
               className="input-login inputPassWord"
               placeholder="Password"
@@ -117,13 +128,16 @@ export default function Register() {
             disabled={ buttonDisable }
             onClick={ handleClick }
           >
-            Enter
+            Cadastrar
           </button>
         </div>
         {redirect && <Redirect to="/customer/products" />}
 
       </div>
-
+      {resgisterError && <ErrorMessage
+        ErrorMsg={ errorMsg }
+        dataTestid="common_register__element-invalid_register"
+      /> }
     </section>
   );
 }
