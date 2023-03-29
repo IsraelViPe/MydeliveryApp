@@ -1,17 +1,17 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import DeliveryProvider from './context/deliveryProvider';
+import RegisterScreen from './pages/Register/Register';
+
 import './App.css';
-import rockGlass from './images/rockGlass.svg';
-// Iniciando projeto
-// Criando a branch development
 
 function App() {
   return (
-    <div className="App">
-      <span className="logo">TRYBE</span>
-      <object className="rocksGlass" type="image/svg+xml" data={ rockGlass }>
-        Glass
-      </object>
-    </div>
+    <DeliveryProvider>
+      <Switch>
+        <Route exact path="/register" component={ RegisterScreen } />
+      </Switch>
+    </DeliveryProvider>
   );
 }
 
