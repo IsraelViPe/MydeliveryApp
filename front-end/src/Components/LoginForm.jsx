@@ -32,6 +32,20 @@ export default function LoginForm() {
         role: data.role,
         token: data.token,
       }));
+
+      switch (data.role) {
+      case 'costumer':
+        navigate('/customer/orders');
+        break;
+      case 'seller':
+        navigate('/seller/orders');
+        break;
+      case 'administator':
+        navigate('/admin/manage');
+        break;
+      default:
+        navigate('/login');
+      }
     } catch (error) {
       const { message } = error;
       setLoginError(true);
