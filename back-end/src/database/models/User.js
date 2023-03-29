@@ -15,19 +15,20 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     timestamps: false,
     tableName: 'users',
+    sequelize,
   })
 
-  // User.associate = ({ Sale }) => {
-  //   User.hasMany(Sale, {
-  //     as: 'customers',
-  //     foreignKey: 'userId'
-  //   });
+  User.associate = ({ Sale }) => {
+    User.hasMany(Sale, {
+      as: 'customers',
+      foreignKey: 'userId'
+    });
 
-  //   User.hasMany(Sale, {
-  //     as: 'sales',
-  //     foreignKey: 'sellerId',
-  //   })
-  // }
+    User.hasMany(Sale, {
+      as: 'sales',
+      foreignKey: 'sellerId',
+      })
+    }
 
   return User;
 };
