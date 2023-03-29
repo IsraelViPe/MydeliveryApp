@@ -8,7 +8,7 @@ const LoginSchema = Joi.object({
     'string.min': 'O campo {#label} deve ter no mínimo 6 caracteres',
     'string.required': 'O campo {#label} deve ser informado',
     'string.empty': 'O campo {#label} deve ser informado',
-    'any.required': 'O campo {#label} é obrigatório'
+    'any.required': 'O campo {#label} é obrigatório',
 });
 
 module.exports = LoginSchema;

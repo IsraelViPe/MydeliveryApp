@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 const LoginSchema = require('../services/validations/schemas/LoginSchema');
@@ -10,7 +11,8 @@ router.post('/', (req, res, next) => {
 
   if (error) {
     const err = mapError(error.message);
-    return res.status(err.statusCode).json({ message: err.message });
+    next(err);
+    return;
   }
 
   return res.status(200).json(value);
