@@ -35,8 +35,8 @@ export default function LoginForm() {
       }));
 
       switch (data.role) {
-      case 'costumer':
-        history.push('/customer/orders');
+      case 'customer':
+        history.push('/customer/products');
         break;
       case 'seller':
         history.push('/seller/orders');
@@ -48,9 +48,9 @@ export default function LoginForm() {
         history.push('/login');
       }
     } catch (error) {
-      const { message } = error;
+      const { response } = error;
       setLoginError(true);
-      setErrorMsg(message);
+      setErrorMsg(JSON.parse(response).message);
     }
   }
 
@@ -97,7 +97,7 @@ export default function LoginForm() {
         { loginError && (
           <ErrorMessage
             ErrorMsg={ errorMsg }
-            dataTestid="common_login__element-invalid-email"
+            dataTestId="common_login__element-invalid-email"
           />
         ) }
       </form>

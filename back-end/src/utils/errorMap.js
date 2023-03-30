@@ -1,10 +1,14 @@
 const codes = {
     OK: 200,
     UNAUTHORIZED: 401,
+    UNPROCESSIBLE_ENTITY: 422,
+    NOT_FOUND: 404,
 };
 
 const errors = [
-    { message: 'O "email" informado é inválido', statusCode: codes.UNAUTHORIZED },
+    { message: 'Usuário ou senha inválido', statusCode: codes.NOT_FOUND },
+    { message: 'O campo "email" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "password" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
 ];
 
 const mapError = (message) => {
