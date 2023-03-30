@@ -25,9 +25,7 @@ export default function LoginForm() {
   async function handleLogin() {
     try {
       setLoginError(false);
-      const res = await postLogin({ email, password });
-      const { data, message, error } = res;
-      console.log(data, message, res.message, error);
+      const { data } = await postLogin({ email, password });
       localStorage.setItem('user', JSON.stringify({
         id: data.id,
         name: data.name,
@@ -39,13 +37,13 @@ export default function LoginForm() {
       console.log(data);
 
       switch (data.role) {
-      case 'costumer':
-        history.push('/customer/orders');
+      case 'customer':
+        history.push('/customer/products');
         break;
       case 'seller':
         history.push('/seller/orders');
         break;
-      case 'administrator':
+      case 'administator':
         history.push('/admin/manage');
         break;
       default:
