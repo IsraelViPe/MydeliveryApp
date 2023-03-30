@@ -1,18 +1,18 @@
 import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import DeliveryProvider from './context/deliveryProvider';
+import Register from './pages/Register/Register';
 import './App.css';
-import rockGlass from './images/rockGlass.svg';
-// Iniciando projeto
-// Criando a branch development
+import Login from './pages/Login/Login';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <span className="logo">TRYBE</span>
-      <object className="rocksGlass" type="image/svg+xml" data={ rockGlass }>
-        Glass
-      </object>
-    </div>
+    <DeliveryProvider>
+      <Switch>
+        <Route exact path="/register" component={ Register } />
+        <Route exact path="/" render={ () => <Redirect to="/login" /> } />
+        <Route exact path="/login" component={ Login } />
+      </Switch>
+    </DeliveryProvider>
   );
 }
-
-export default App;
