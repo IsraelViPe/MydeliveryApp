@@ -50,9 +50,9 @@ export default function LoginForm() {
         history.push('/login');
       }
     } catch (error) {
-      const { message } = error;
+      const { response } = error;
       setLoginError(true);
-      setErrorMsg(message);
+      setErrorMsg(JSON.parse(response).message);
     }
   }
 
