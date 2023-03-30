@@ -34,8 +34,6 @@ export default function LoginForm() {
         token: data.token,
       }));
 
-      console.log(data);
-
       switch (data.role) {
       case 'customer':
         history.push('/customer/products');
