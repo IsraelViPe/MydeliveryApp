@@ -25,7 +25,9 @@ export default function LoginForm() {
   async function handleLogin() {
     try {
       setLoginError(false);
-      const { data } = await postLogin({ email, password });
+      const res = await postLogin({ email, password });
+      const { data, message, error } = res;
+      console.log(data, message, res.message, error);
       localStorage.setItem('user', JSON.stringify({
         id: data.id,
         name: data.name,
@@ -34,6 +36,8 @@ export default function LoginForm() {
         token: data.token,
       }));
 
+      console.log(data);
+
       switch (data.role) {
       case 'costumer':
         history.push('/customer/orders');
@@ -41,7 +45,7 @@ export default function LoginForm() {
       case 'seller':
         history.push('/seller/orders');
         break;
-      case 'administator':
+      case 'administrator':
         history.push('/admin/manage');
         break;
       default:
@@ -97,7 +101,7 @@ export default function LoginForm() {
         { loginError && (
           <ErrorMessage
             ErrorMsg={ errorMsg }
-            dataTestid="common_login__element-invalid-email"
+            dataTestId="common_login__element-invalid-email"
           />
         ) }
       </form>

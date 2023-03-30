@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     deliveryAddress: DataTypes.STRING,
     deliveryNumber: DataTypes.STRING,
     saleDate: DataTypes.DATE,
-    status: DataTypes.ENUM('preparando','pendente','entregue'),
+    status: DataTypes.STRING,
   });
 
   Sale.associate = ({User}) => {

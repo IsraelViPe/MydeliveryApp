@@ -5,8 +5,12 @@ const api = axios.create({
 });
 
 export default async function postLogin(body) {
-  const response = await api.post('/login', body);
-  return response;
+  try {
+    const response = await api.post('/login', body);
+    return response;
+  } catch (error) {
+    return error;
+  }
 }
 
 // async function getUser() {
