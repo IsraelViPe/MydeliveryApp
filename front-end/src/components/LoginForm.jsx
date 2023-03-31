@@ -41,7 +41,7 @@ export default function LoginForm() {
       case 'seller':
         history.push('/seller/orders');
         break;
-      case 'administator':
+      case 'administrator':
         history.push('/admin/manage');
         break;
       default:
@@ -50,7 +50,7 @@ export default function LoginForm() {
     } catch (error) {
       const { response } = error;
       setLoginError(true);
-      setErrorMsg(JSON.parse(response).message);
+      setErrorMsg(response.data.message);
     }
   }
 
