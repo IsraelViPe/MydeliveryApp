@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
 import { postRegister } from '../Services/RequestAPI';
 
@@ -7,6 +7,7 @@ const MIN_CHAR = 6;
 const NAME_CHAR = 12;
 
 export default function Register() {
+  const history = useHistory();
   const [buttonDisable, setButtonDisable] = useState(true);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -117,7 +118,7 @@ export default function Register() {
             Cadastrar
           </button>
         </div>
-        {redirect && <Redirect to="/customer/products" />}
+        {redirect && history.push('/customer/products') }
 
       </div>
       {resgisterError && <ErrorMessage
