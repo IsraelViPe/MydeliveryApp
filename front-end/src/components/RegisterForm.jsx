@@ -23,8 +23,8 @@ export default function Register() {
       role: 'customer',
     };
     try {
-      setRegisterError(false);
       await postRegister(body);
+      setRegisterError(false);
     } catch (error) {
       const { response } = error;
       setRegisterError(true);
