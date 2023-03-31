@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     modelName: 'SaleProduct',
     tableName: 'sales_products',
+    timestamps: false,
     sequelize,
   })
 
@@ -27,15 +28,15 @@ module.exports = (sequelize, DataTypes) => {
     Sale.belongsToMany(Product, {
       as: 'products',
       through: SaleProduct,
-      foreignKey: 'sale_id',
-      otherKey: 'product_id'
+      foreignKey: 'saleId',
+      otherKey: 'productId'
     });
 
     Product.belongsToMany(Sale, {
       as: 'products',
       through: SaleProduct,
-      foreignKey: 'product_id',
-      otherKey: 'sale_id'
+      foreignKey: 'productId',
+      otherKey: 'saleId'
     })
   }
 

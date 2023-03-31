@@ -46,4 +46,4 @@ const tokenGenerate = (payload) => {
     return token;
 };
 
-module.exports = { mapError, tokenGenerate };
+module.exports = { mapError, tokenGenerate, codes };

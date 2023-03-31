@@ -5,8 +5,6 @@ const { User } = require('../database/models');
 
 const login = async (email, password) => {
     const { error } = LoginSchema.validate({ email, password });
-    console.log(email, password);
-    console.log(md5(password), md5('3c28d2b0881bf46457a853e0b07531c6'));
     if (error) {
       const err = mapError(error.message);
       return err;
