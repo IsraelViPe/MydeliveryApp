@@ -23,7 +23,7 @@ export async function verifyToken(token) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.post('/verifyToken', {}, config);
+  const response = await api.post('/tokenverify', {}, config);
   return response;
 }
 

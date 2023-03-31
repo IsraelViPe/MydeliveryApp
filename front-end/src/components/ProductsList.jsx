@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getAllProducts } from '../Services/RequestAPI';
+import { getAllProducts, verifyToken } from '../Services/RequestAPI';
 
 export default function ProductsList() {
   const [products, setProducts] = useState([]);
@@ -14,20 +14,20 @@ export default function ProductsList() {
     localStorage.setItem('cart', JSON.stringify({}));
   }
 
-  // const checkUser = async () => {
-  //   const { token, name } = JSON.parse(localStorage.getItem('user'));
-  //   const { data } = await verifyToken(token);
+  const checkUser = async () => {
+    const { token, name } = JSON.parse(localStorage.getItem('user'));
+    const { data } = await verifyToken(token);
 
-  //   if (data.name !== name) {
-  //     localStorage.removeItem('user');
-  //     history.push('/login');
-  //   }
-  // };
+    if (data.name !== name) {
+      localStorage.removeItem('user');
+      history.push('/login');
+    }
+  };
 
   const getProducts = useCallback(async () => {
     const { data } = await getAllProducts();
     console.log(data, '1');
-    // await checkUser();
+    await checkUser();
     setProducts(data);
     const objProducts = data.reduce((prev, curr) => ({
       ...prev,
@@ -108,10 +108,10 @@ export default function ProductsList() {
 
     const totalCart = Object.values(cart).reduce((prev, curr) => prev + curr.subTotal, 0);
 
-    setTotalValue(totalCart);
+    setTotal(totalCart);
 
-    if (!totalCart) setDisabledCheckout(true);
-    else setDisabledCheckout(false);
+    if (!totalCart) setDisableCheckout(true);
+    else setDisableCheckout(false);
   }
 
   useEffect(() => setValue(), [qtyProducts]);
@@ -187,7 +187,7 @@ export default function ProductsList() {
         <p
           data-testid="customer_products__checkout-bottom-value"
         >
-          {`Ver Carrinho: ${String(totalValue.toFixed(2)).replace(/\./, ',')}`}
+          {`Ver Carrinho: ${String(total.toFixed(2)).replace(/\./, ',')}`}
         </p>
       </button>
     </div>
