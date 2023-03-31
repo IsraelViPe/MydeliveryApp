@@ -67,7 +67,7 @@ export default function ProductsList() {
 
     setQtyProducts({
       ...qtyProducts,
-      [name]: qtyProducts[name] === 0 ? 0 : quantityProducts[name] - 1,
+      [name]: qtyProducts[name] === 0 ? 0 : qtyProducts[name] - 1,
     });
 
     const newCart = {
