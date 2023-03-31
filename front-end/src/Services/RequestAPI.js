@@ -22,3 +22,8 @@ export async function postRegister(body) {
   const response = await api.post('/register', body);
   return response;
 }
+
+export async function getAllProducts() {
+  const response = await api.get('/getAllProducts');
+  return response;
+}
