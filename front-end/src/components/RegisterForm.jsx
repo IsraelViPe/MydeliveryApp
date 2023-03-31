@@ -50,14 +50,15 @@ export default function Register() {
   const checkPassword = (pass) => pass.length >= MIN_CHAR;
   const checkEmail = (mail) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
 
+  const checkButton = () => {
+    if (checkName(name) && checkPassword(password) && checkEmail(email)) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
+    }
+  };
+
   useEffect(() => {
-    const checkButton = () => {
-      if (checkName(name) && checkPassword(password) && checkEmail(email)) {
-        setButtonDisable(false);
-      } else {
-        setButtonDisable(true);
-      }
-    };
     checkButton();
   }, [name, password, email]);
 

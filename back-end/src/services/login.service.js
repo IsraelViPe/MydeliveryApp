@@ -1,6 +1,6 @@
 const md5 = require('md5');
 const LoginSchema = require('./validations/schemas/LoginSchema');
-const mapError = require('../utils/errorMap');
+const { mapError, tokenGenerate } = require('../utils/errorMap');
 const { User } = require('../database/models');
 
 const login = async (email, password) => {
@@ -18,7 +18,9 @@ const login = async (email, password) => {
     if (md5(password) !== user.password) return mapError('Usuário ou senha inválido');
 
     delete user.password;
-    return user;
+    
+    const token = tokenGenerate({ sub: user.id });
+    return { name: user.name, email: user.email, role: user.role, token };
 };
 
 module.exports = { login };
