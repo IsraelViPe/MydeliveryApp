@@ -1,3 +1,9 @@
+const Jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+
+/** Mapeamento de Error */
+
 const codes = {
     OK: 200,
     CREATED: 201,
@@ -32,4 +38,12 @@ const mapError = (message) => {
     return { message: 'Error not Mapped', statusCode: 403 };
 };
 
-module.exports = mapError;
+/** Função Geração de Token */
+const tokenGenerate = (payload) => {
+    const pathSecret = path.resolve(__dirname, '..', '..', 'jwt.evaluation.key');
+    const tokenSecret = fs.readFileSync(pathSecret);
+    const token = Jwt.sign(payload, tokenSecret);
+    return token;
+};
+
+module.exports = { mapError, tokenGenerate };

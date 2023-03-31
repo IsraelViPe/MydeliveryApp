@@ -1,5 +1,5 @@
 const RegisterService = require('../services/register.service');
-const mapError = require('../utils/errorMap');
+const { mapError } = require('../utils/errorMap');
 
 const register = async (req, res, next) => {
   const userData = { ...req.body };

@@ -27,7 +27,6 @@ export default function LoginForm() {
       setLoginError(false);
       const { data } = await postLogin({ email, password });
       localStorage.setItem('user', JSON.stringify({
-        id: data.id,
         name: data.name,
         email: data.email,
         role: data.role,
