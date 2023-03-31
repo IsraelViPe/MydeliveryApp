@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const md5 = require('md5');
 const { User } = require('../database/models');
-const mapError = require('../utils/errorMap');
+const { mapError } = require('../utils/errorMap');
 const RegisterSchema = require('./validations/schemas/RegisterSchema');
 
 const register = async (userData) => {
