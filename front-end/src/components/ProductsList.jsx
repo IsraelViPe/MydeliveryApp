@@ -187,7 +187,7 @@ export default function ProductsList() {
         <p
           data-testid="customer_products__checkout-bottom-value"
         >
-          {`Ver Carrinho: ${String(total.toFixed(2)).replace(/\./, ',')}`}
+          {String(total.toFixed(2)).replace(/\./, ',')}
         </p>
       </button>
     </div>
