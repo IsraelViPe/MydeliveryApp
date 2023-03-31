@@ -35,22 +35,22 @@ export default function LoginForm() {
       }));
 
       switch (data.role) {
-      case 'costumer':
-        history.push('/customer/orders');
+      case 'customer':
+        history.push('/customer/products');
         break;
       case 'seller':
         history.push('/seller/orders');
         break;
-      case 'administator':
+      case 'administrator':
         history.push('/admin/manage');
         break;
       default:
         history.push('/login');
       }
     } catch (error) {
-      const { message } = error;
+      const { response } = error;
       setLoginError(true);
-      setErrorMsg(message);
+      setErrorMsg(response.data.message);
     }
   }
 
@@ -97,7 +97,7 @@ export default function LoginForm() {
         { loginError && (
           <ErrorMessage
             ErrorMsg={ errorMsg }
-            dataTestid="common_login__element-invalid-email"
+            dataTestId="common_login__element-invalid-email"
           />
         ) }
       </form>
