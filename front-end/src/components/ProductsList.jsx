@@ -75,9 +75,9 @@ export default function ProductsList() {
       [dataset.productid]: {
         id: dataset.productid,
         name,
-        quantity: quantityProducts[name] === 0 ? 0 : quantityProducts[name] - 1,
+        quantity: qtyProducts[name] === 0 ? 0 : qtyProducts[name] - 1,
         unitPrice: dataset.productprice,
-        subTotal: (Number(dataset.productprice) * (quantityProducts[name] - 1)),
+        subTotal: (Number(dataset.productprice) * (qtyProducts[name] - 1)),
       },
     };
     localStorage.setItem('cart', JSON.stringify(newCart));
@@ -86,8 +86,8 @@ export default function ProductsList() {
   function inputQty({ target: { name, value, dataset } }) {
     const cart = JSON.parse(localStorage.getItem('cart'));
 
-    setQuantityProducts({
-      ...quantityProducts,
+    setQtyProducts({
+      ...qtyProducts,
       [name]: value,
     });
 
