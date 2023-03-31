@@ -9,6 +9,24 @@ export default async function postLogin(body) {
   return response;
 }
 
+export async function postRegister(body) {
+  const response = await api.post('/register', body);
+  return response;
+}
+
+export async function getAllProducts() {
+  const response = await api.get('/products');
+  return response;
+}
+
+export async function verifyToken(token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.post('/tokenverify', {}, config);
+  return response;
+}
+
 // async function getUser() {
 //   try {
 //     const response = await axios.get('/user?ID=12345');
@@ -17,8 +35,3 @@ export default async function postLogin(body) {
 //     console.error(error);
 //   }
 // }
-
-export async function postRegister(body) {
-  const response = await api.post('/register', body);
-  return response;
-}
