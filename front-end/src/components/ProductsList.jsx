@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getAllProducts } from '../Services/RequestAPI';
 
@@ -6,7 +6,7 @@ export default function ProductsList() {
   const [products, setProducts] = useState([]);
   const [qtyProducts, setQtyProducts] = useState({});
   const [total, setTotal] = useState(0);
-  const [disabledCheckeout, setDisableCheckout] = useState(false);
+  const [disabledCheckout, setDisableCheckout] = useState(false);
 
   const history = useHistory();
 
@@ -14,25 +14,27 @@ export default function ProductsList() {
     localStorage.setItem('cart', JSON.stringify({}));
   }
 
-  const checkUser = async () => {
-    const { token, name } = JSON.parse(localStorage.getItem('user'));
-    const { data } = await verifyToken(token);
+  // const checkUser = async () => {
+  //   const { token, name } = JSON.parse(localStorage.getItem('user'));
+  //   const { data } = await verifyToken(token);
 
-    if (data.name !== name) {
-      localStorage.removeItem('user');
-      history.push('/login');
-    }
-  };
+  //   if (data.name !== name) {
+  //     localStorage.removeItem('user');
+  //     history.push('/login');
+  //   }
+  // };
 
-  const getProducts = useCallBack(async () => {
+  const getProducts = useCallback(async () => {
     const { data } = await getAllProducts();
-    await checkUser();
+    console.log(data, '1');
+    // await checkUser();
     setProducts(data);
     const objProducts = data.reduce((prev, curr) => ({
       ...prev,
       [curr.name]: 0,
     }), {});
     setQtyProducts(objProducts);
+    console.log(objProducts, '2');
   }, []);
 
   useEffect(() => {
@@ -42,9 +44,9 @@ export default function ProductsList() {
   function addPrduct({ target: { name, dataset } }) {
     const cart = JSON.parse(localStorage.getItem('cart'));
 
-    setQuantityProducts({
-      ...quantityProducts,
-      [name]: quantityProducts[name] + 1,
+    setQtyProducts({
+      ...qtyProducts,
+      [name]: qtyProducts[name] + 1,
     });
 
     const newCart = {
@@ -52,13 +54,67 @@ export default function ProductsList() {
       [dataset.productid]: {
         id: dataset.productid,
         name,
-        quantity: quantityProducts[name] + 1,
-        unitPrice: dataset.unitprice,
-        subTotal: (Number(dataset.unitprice) * (quantityProducts[name] + 1)),
+        quantity: qtyProducts[name] + 1,
+        unitPrice: dataset.productprice,
+        subTotal: (Number(dataset.productprice) * (qtyProducts[name] + 1)),
       },
     };
     localStorage.setItem('cart', JSON.stringify(newCart));
   }
+
+  function subProduct({ target: { name, dataset } }) {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+
+    setQtyProducts({
+      ...qtyProducts,
+      [name]: qtyProducts[name] === 0 ? 0 : quantityProducts[name] - 1,
+    });
+
+    const newCart = {
+      ...cart,
+      [dataset.productid]: {
+        id: dataset.productid,
+        name,
+        quantity: quantityProducts[name] === 0 ? 0 : quantityProducts[name] - 1,
+        unitPrice: dataset.productprice,
+        subTotal: (Number(dataset.productprice) * (quantityProducts[name] - 1)),
+      },
+    };
+    localStorage.setItem('cart', JSON.stringify(newCart));
+  }
+
+  function inputQty({ target: { name, value, dataset } }) {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+
+    setQuantityProducts({
+      ...quantityProducts,
+      [name]: value,
+    });
+
+    const newCart = {
+      ...cart,
+      [dataset.productid]: {
+        name,
+        quantity: value,
+        unitPrice: dataset.unitprice,
+        subTotal: (Number(dataset.unitprice) * value),
+      },
+    };
+    localStorage.setItem('cart', JSON.stringify(newCart));
+  }
+
+  function setValue() {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+
+    const totalCart = Object.values(cart).reduce((prev, curr) => prev + curr.subTotal, 0);
+
+    setTotalValue(totalCart);
+
+    if (!totalCart) setDisabledCheckout(true);
+    else setDisabledCheckout(false);
+  }
+
+  useEffect(() => setValue(), [qtyProducts]);
 
   return (
     <div>
@@ -91,8 +147,8 @@ export default function ProductsList() {
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
                 name={ product.name }
                 data-productid={ product.id }
-                data-unitprice={ product.price }
-                onClick={ addPrduct } // handleIncrement
+                data-productprice={ product.price }
+                onClick={ addPrduct }
               >
                 +
               </button>
@@ -100,7 +156,7 @@ export default function ProductsList() {
               <input
                 type="number"
                 min="0"
-                onChange={ handleQtyProduct } // handleInputQtd
+                onChange={ inputQty }
                 name={ product.name }
                 data-productid={ product.id }
                 data-unitprice={ product.price }
