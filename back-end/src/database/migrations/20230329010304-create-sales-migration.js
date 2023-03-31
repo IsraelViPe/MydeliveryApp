@@ -17,7 +17,7 @@ module.exports = {
       },
       delivery_number: { type: Sequelize.STRING },
       sale_date: { type: Sequelize.DATE },
-      status: { type: Sequelize.ENUM('preparando','pendente','entregue') },
+      status: { type: Sequelize.STRING },
     })
   },
 

@@ -1,29 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
+import { postRegister } from '../Services/RequestAPI';
 
 const MIN_CHAR = 6;
 const NAME_CHAR = 12;
 
 export default function Register() {
-  const [passwordDisable, setPasswordDisable] = useState(true);
-  const [emailDisable, setEmailDisable] = useState(true);
   const [buttonDisable, setButtonDisable] = useState(true);
-  const [nameDisable, setNameDisable] = useState(true);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   const [resgisterError, setRegisterError] = useState(false);
   const [errorMsg, setErrorMsg] = useState();
-
-  const isButtonActive = () => {
-    if (passwordDisable === false && emailDisable === false && nameDisable === false) {
-      setButtonDisable(false);
-    } else {
-      setButtonDisable(true);
-    }
-  };
 
   async function handleClick() {
     const body = {
@@ -33,45 +23,43 @@ export default function Register() {
       role: 'customer',
     };
     try {
-      setRegisterError(false);
       await postRegister(body);
+      setRegisterError(false);
     } catch (error) {
-      const { message } = error;
+      const { response } = error;
       setRegisterError(true);
-      setErrorMsg(message);
+      setErrorMsg(response.data.message);
+      return;
     }
     setRedirect(true);
   }
 
-  const passwordValidation = ({ target }) => {
+  const setInputPassword = ({ target }) => {
     setPassword(target.value);
-    if (target.value.length > MIN_CHAR) {
-      setPasswordDisable(false);
-    } else {
-      setPasswordDisable(true);
-    }
-    isButtonActive();
   };
 
-  const nameValidation = ({ target }) => {
+  const setInputName = ({ target }) => {
     setName(target.value);
-    if (target.value < NAME_CHAR) {
-      setNameDisable(true);
-    } else {
-      setNameDisable(false);
-    }
-    isButtonActive();
   };
 
-  const emailValidation = ({ target }) => {
+  const setInputEmail = ({ target }) => {
     setEmail(target.value);
-    if (target.value.match(/^[^\s@]+@[^\s@]+\.com$/)) {
-      setEmailDisable(false);
-    } else {
-      setEmailDisable(true);
-    }
-    isButtonActive();
   };
+
+  const checkName = (n) => n.length >= NAME_CHAR;
+  const checkPassword = (pass) => pass.length >= MIN_CHAR;
+  const checkEmail = (mail) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
+
+  useEffect(() => {
+    const checkButton = () => {
+      if (checkName(name) && checkPassword(password) && checkEmail(email)) {
+        setButtonDisable(false);
+      } else {
+        setButtonDisable(true);
+      }
+    };
+    checkButton();
+  }, [name, password, email]);
 
   return (
     <section className="page-register">
@@ -88,8 +76,7 @@ export default function Register() {
               className="input-login inputNome"
               placeholder="Seu Nome"
               value={ name }
-              onKeyUp={ nameValidation }
-              onChange={ nameValidation }
+              onChange={ setInputName }
             />
           </label>
           <label htmlFor="email-input" className="label-login">
@@ -101,8 +88,7 @@ export default function Register() {
               className="input-login inputEmail"
               placeholder="exemplo@exemplo"
               value={ email }
-              onKeyUp={ emailValidation }
-              onChange={ emailValidation }
+              onChange={ setInputEmail }
             />
           </label>
           <label htmlFor="password-input" className="label-login">
@@ -114,8 +100,7 @@ export default function Register() {
               data-testid="common_register__input-password"
               className="input-login inputPassWord"
               placeholder="Password"
-              onChange={ passwordValidation }
-              onKeyUp={ passwordValidation }
+              onChange={ setInputPassword }
             />
           </label>
         </form>
@@ -136,7 +121,7 @@ export default function Register() {
       </div>
       {resgisterError && <ErrorMessage
         ErrorMsg={ errorMsg }
-        dataTestid="common_register__element-invalid_register"
+        dataTestId="common_register__element-invalid_register"
       /> }
     </section>
   );

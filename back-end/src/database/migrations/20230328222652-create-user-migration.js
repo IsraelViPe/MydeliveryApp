@@ -5,7 +5,7 @@ module.exports = {
       name: { type: Sequelize.STRING, allowNull: false },
       email: { type: Sequelize.STRING, allowNull: false },
       password: { type: Sequelize.STRING, allowNull: false },
-      role: { type: Sequelize.ENUM('administrator', 'customer', 'seller') },
+      role: { type: Sequelize.STRING },
     });
   },
 

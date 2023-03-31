@@ -9,13 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    role: DataTypes.ENUM('administrator', 'customer', 'seller'),   
+    role: DataTypes.STRING,   
   },{
     underscored: true,
     modelName: 'User',
     timestamps: false,
     tableName: 'users',
-    sequelize,
   })
 
   User.associate = ({ Sale }) => {
