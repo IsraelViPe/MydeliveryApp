@@ -35,3 +35,4 @@ export async function verifyToken(token) {
 //     console.error(error);
 //   }
 // }
+// comentou

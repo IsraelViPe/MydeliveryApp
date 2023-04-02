@@ -25,16 +25,15 @@ export default function ProductsList() {
   };
 
   const getProducts = useCallback(async () => {
-    const { data } = await getAllProducts();
-    console.log(data, '1');
     await checkUser();
+    const { data } = await getAllProducts();
     setProducts(data);
     const objProducts = data.reduce((prev, curr) => ({
       ...prev,
       [curr.name]: 0,
     }), {});
     setQtyProducts(objProducts);
-    console.log(objProducts, '2');
+    // console.log(objProducts);
   }, []);
 
   useEffect(() => {
