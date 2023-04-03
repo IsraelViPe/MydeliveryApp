@@ -31,6 +31,20 @@ const errors = [
       message: 'O campo "nome" deve ter no mínimo 12 caracteres',
       statusCode: codes.UNPROCESSIBLE_ENTITY,
     },
+    { message: 'O campo "userId" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "sellerId" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "totalPrice" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "deliveryAddress" deve ser informado',
+    statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "deliveryNumber" deve ser informado', 
+    statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "saleDate" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "status" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "products" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "products" deve ter no mínimo 1', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "productId" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "quantity" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'O campo "quantity" deve ter no mínimo 1', statusCode: codes.UNPROCESSIBLE_ENTITY },
 
 ];
 
@@ -48,4 +62,4 @@ const tokenGenerate = (payload) => {
     return token;
 };
 
-module.exports = { mapError, tokenGenerate };
+module.exports = { mapError, tokenGenerate, codes };
