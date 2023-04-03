@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
 import { postRegister } from '../Services/RequestAPI';
 
@@ -11,9 +11,11 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [redirect, setRedirect] = useState(false);
+  // const [redirect, setRedirect] = useState(false);
   const [resgisterError, setRegisterError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState();
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const history = useHistory();
 
   async function handleClick() {
     const body = {
@@ -23,15 +25,21 @@ export default function Register() {
       role: 'customer',
     };
     try {
-      await postRegister(body);
-      setRegisterError(false);
+      const { data } = await postRegister(body);
+      console.log(data);
+      localStorage.setItem('user', JSON.stringify({
+        name: data.name,
+        email: data.email,
+        role: body.role,
+        token: data.token,
+      }));
+      history.push('/customer/products');
+      // setRegisterError(false);
     } catch (error) {
       const { response } = error;
       setRegisterError(true);
       setErrorMsg(response.data.message);
-      return;
     }
-    setRedirect(true);
   }
 
   const setInputPassword = ({ target }) => {
@@ -117,8 +125,7 @@ export default function Register() {
             Cadastrar
           </button>
         </div>
-        {redirect && <Redirect to="/customer/products" />}
-
+        {/* {redirect && history.push('/customer/products') } */}
       </div>
       {resgisterError && <ErrorMessage
         ErrorMsg={ errorMsg }

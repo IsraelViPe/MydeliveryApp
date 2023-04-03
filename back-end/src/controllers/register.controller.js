@@ -1,5 +1,4 @@
 const RegisterService = require('../services/register.service');
-const { mapError } = require('../utils/errorMap');
 
 const register = async (req, res, next) => {
   const userData = { ...req.body };
@@ -10,10 +9,8 @@ const register = async (req, res, next) => {
     next(response);
     return;
   }
-
-  const resp = mapError(response.message);
-
-  return res.status(resp.statusCode).json({ message: resp.message });
+  console.log(response);
+  return res.status(201).json(response);
 };
 
 module.exports = { register };

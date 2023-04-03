@@ -5,6 +5,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('./public'));
+
+app.use('/', require('../routes/index.router'));
 
 app.get('/coffee', (_req, res) => res.status(418).end());
 app.use('/login', require('../routes/login.router'));

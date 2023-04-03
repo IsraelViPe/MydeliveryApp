@@ -11,6 +11,7 @@ const codes = {
     UNPROCESSIBLE_ENTITY: 422,
     NOT_FOUND: 404,
     CONFLICT: 409,
+    FORBIDDEN: 403,
 };
 
 const errors = [
@@ -21,6 +22,7 @@ const errors = [
     { message: 'O "email" informado é inválido', statusCode: codes.UNPROCESSIBLE_ENTITY },
     { message: 'Nome ou email já cadastrado', statusCode: codes.CONFLICT },
     { message: 'Usuário cadastrado com sucesso', statusCode: codes.CREATED },
+    { message: 'Token inválido', statusCode: codes.FORBIDDEN },
     { 
         message: 'O campo "senha" deve ter no mínimo 6 caracteres',
         statusCode: codes.UNPROCESSIBLE_ENTITY,
@@ -42,7 +44,7 @@ const mapError = (message) => {
 const tokenGenerate = (payload) => {
     const pathSecret = path.resolve(__dirname, '..', '..', 'jwt.evaluation.key');
     const tokenSecret = fs.readFileSync(pathSecret);
-    const token = Jwt.sign(payload, tokenSecret);
+    const token = Jwt.sign(payload, tokenSecret, { expiresIn: '1h' });
     return token;
 };
 

@@ -5,12 +5,14 @@ const { User } = require('../database/models');
 
 const login = async (email, password) => {
     const { error } = LoginSchema.validate({ email, password });
+    
     if (error) {
       const err = mapError(error.message);
       return err;
     }
 
     const user = await User.findOne({ where: { email }, raw: true });
+    
     if (!user) return mapError('Usuário ou senha inválido');
 
     if (md5(password) !== user.password) return mapError('Usuário ou senha inválido');
