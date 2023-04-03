@@ -5,16 +5,19 @@ import Register from './pages/Register/Register';
 import './App.css';
 import Login from './pages/Login/Login';
 import Products from './pages/Products/Products';
+import CartProvider from './context/CartProvider';
 
 export default function App() {
   return (
     <DeliveryProvider>
-      <Switch>
-        <Route exact path="/register" component={ Register } />
-        <Route exact path="/" render={ () => <Redirect to="/login" /> } />
-        <Route exact path="/login" component={ Login } />
-        <Route exact path="/customer/products" component={ Products } />
-      </Switch>
+      <CartProvider>
+        <Switch>
+          <Route exact path="/register" component={ Register } />
+          <Route exact path="/" render={ () => <Redirect to="/login" /> } />
+          <Route exact path="/login" component={ Login } />
+          <Route exact path="/customer/products" component={ Products } />
+        </Switch>
+      </CartProvider>
     </DeliveryProvider>
   );
 }
