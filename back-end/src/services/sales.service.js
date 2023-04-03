@@ -48,5 +48,3 @@ const create = async (sale) => {
 };
 
 module.exports = { create };
-
-// {userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, saleDate, status}
