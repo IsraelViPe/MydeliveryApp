@@ -67,7 +67,7 @@ function ProductSetQty({ product }) {
   };
 
   const incQuantity = ({ target: { name, dataset: { productid, unitprice } } }) => {
-    const inputQuant = document.querySelector(`[data-productid="${productid}"`);
+    const inputQuant = document.querySelector(`[data-productid="${productid}"]`);
     const crt = getCart();
     const existItem = crt.some((c) => +c.id === +productid);
 
