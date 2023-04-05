@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CartContext from '../context/CartContext';
 import Cart from './Cart';
 import { getCart, totalValue } from '../utils/localstorage';
@@ -7,7 +7,7 @@ import { getSellers, requestWithToken } from '../Services/RequestAPI';
 
 export default function CustomerCheckout() {
   const { cart, newCart, totalCart, newValue } = useContext(CartContext);
-  // const history = useHistory();
+  const history = useHistory();
   const [sellers, setSellers] = useState([]);
   const [seller, setSeller] = useState(0);
   const [address, setAddress] = useState('');
@@ -33,15 +33,15 @@ export default function CustomerCheckout() {
 
   const sale = async () => {
     const { token } = JSON.parse(localStorage.getItem('user'));
-    const response = await requestWithToken('/sales', {
-      sellerId: 5,
+    const { id } = await requestWithToken('/sales', {
+      sellerId: Number(seller.id),
       totalPrice: totalCart,
       deliveryAddress: address,
       deliveryNumber: Number(number),
       products: cart,
     }, token);
-    console.log(response);
-    // history.push(`/customer/orders/${response}`);
+    console.log(id);
+    history.push(`/customer/orders/${id}`);
   };
 
   const selSeller = (e) => {

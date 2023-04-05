@@ -57,12 +57,12 @@ export default function Cart(props) {
       <td
         data-testid={ `${prefix}element-order-table-unit-price-${id}` }
       >
-        {item.price}
+        {(item.price).replace(/\./, ',')}
       </td>
       <td
         data-testid={ `${prefix}element-order-table-sub-total-${id}` }
       >
-        {item.subTotal}
+        {(item.subTotal).replace(/\./, ',')}
       </td>
       {checkout ? removeButton : null}
       <td />
