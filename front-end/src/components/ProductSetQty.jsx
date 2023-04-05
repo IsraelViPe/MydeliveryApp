@@ -1,10 +1,26 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { getCart } from '../utils/localstorage';
 import CartContext from '../context/CartContext';
 
 function ProductSetQty({ product }) {
   const { setCart } = useContext(CartContext);
+
+  function initQuantity() {
+    const cart = getCart();
+
+    if (cart.length === 0) return;
+
+    const item = cart.find((it) => +it.id === +product.id);
+    if (item) {
+      document
+        .querySelector(`input[data-productid="${product.id}"]`).value = item.quantity;
+    }
+  }
+
+  useEffect(() => {
+    initQuantity();
+  }, []);
 
   function upCart(quantity) {
     const { id, name, price } = product;
