@@ -47,4 +47,15 @@ const create = async (sale) => {
   return response;
 };
 
-module.exports = { create };
+const getAll = async () => {
+  console.log('aqui');
+  const response = await Sale.findAll();
+  console.log(response, 'resposta');
+
+  if (response.message) {
+    return mapError(response.message);
+  }
+  return response;
+};
+
+module.exports = { create, getAll };
