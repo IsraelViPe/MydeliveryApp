@@ -1,42 +1,57 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { getCart } from '../utils/localstorage';
 import CartContext from '../context/CartContext';
 
 function ProductSetQty({ product }) {
   const { setCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(0);
 
-  useEffect(() => {
-    const cart = getCart();
-    setCart(cart);
-    const itemCart = cart.find((item) => +item.id === +product.id);
-    if (itemCart) setQuantity(itemCart.quantity);
-  }, []);
-
-  useEffect(() => {
-    const cart = getCart();
+  function upCart(quantity) {
+    const { id, name, price } = product;
+    let updatedCart;
+    const shopCart = getCart();
     if (quantity === 0) {
-      const newCart = cart.filter((item) => +item.id !== +product.id);
-      localStorage.setItem('cart', JSON.stringify(newCart));
-      setCart(newCart);
+      updatedCart = shopCart.filter((item) => +item.id !== +product.id);
     } else {
       const NOT_FOUND = -1;
-      const hasItem = cart.findIndex((item) => +item.id === +product.id);
-      if (hasItem !== NOT_FOUND) {
-        cart[hasItem].quantity = +quantity;
-        cart[hasItem].subTotal = (cart[hasItem].quantity * +product.price).toFixed(2);
+      const indexItem = shopCart.findIndex((item) => +item.id === +product.id);
+      if (indexItem !== NOT_FOUND) {
+        shopCart[indexItem].quantity = quantity;
+        shopCart[indexItem].subTotal = (+price * quantity).toFixed(2);
+        updatedCart = shopCart;
       } else {
-        const { id, name, price } = product;
-        cart.push(
-          { id, name, price, quantity, subTotal: (+price * +quantity).toFixed(2) },
-        );
+        shopCart.push({
+          id,
+          name,
+          price,
+          quantity,
+          subTotal: (+price * quantity).toFixed(2) });
+        updatedCart = shopCart;
       }
-
-      localStorage.setItem('cart', JSON.stringify(cart));
-      setCart(cart);
     }
-  }, [quantity]);
+
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setCart(updatedCart);
+  }
+
+  function inc() {
+    const inputQuant = document.querySelector(`input[data-productid="${product.id}"]`);
+    inputQuant.value = +inputQuant.value + 1;
+    const quantity = +inputQuant.value;
+    upCart(quantity);
+  }
+
+  function dec() {
+    const inputQuant = document.querySelector(`input[data-productid="${product.id}"]`);
+    if (+inputQuant.value <= 1) {
+      inputQuant.value = 0;
+    } else {
+      inputQuant.value = +inputQuant.value - 1;
+    }
+
+    const quantity = +inputQuant.value;
+    upCart(quantity);
+  }
 
   return (
     <div style={ { display: 'flex', alignItems: 'center', height: '100%' } }>
@@ -46,14 +61,17 @@ function ProductSetQty({ product }) {
         name={ product.name }
         data-productid={ product.id }
         data-unitprice={ product.price }
-        onClick={ () => { setQuantity(+quantity + 1); } }
+        onClick={ inc }
       >
         +
       </button>
 
       <input
-        onChange={ () => {} }
-        value={ quantity }
+        type="number"
+        min={ 0 }
+        onChange={ ({ target: { value } }) => upCart(+value) }
+        value={ undefined }
+        defaultValue={ 0 }
         data-testid={ `customer_products__input-card-quantity-${product.id}` }
         data-productid={ product.id }
         data-unitprice={ product.price }
@@ -65,7 +83,7 @@ function ProductSetQty({ product }) {
         name={ product.name }
         data-productid={ product.id }
         data-unitprice={ product.price }
-        onClick={ () => { if (+quantity > 0) setQuantity(+quantity - 1); } }
+        onClick={ dec }
       >
         -
       </button>
