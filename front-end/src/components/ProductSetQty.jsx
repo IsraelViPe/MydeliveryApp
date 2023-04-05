@@ -1,113 +1,62 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
-import { getCart, initCart } from '../utils/localstorage';
+import { getCart } from '../utils/localstorage';
 import CartContext from '../context/CartContext';
 
 function ProductSetQty({ product }) {
-  const { cart, setCart } = useContext(CartContext);
-  const [value, setValue] = useState('');
+  const { setCart } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
-    initCart();
+    const cart = getCart();
+    setCart(cart);
+    const itemCart = cart.find((item) => +item.id === +product.id);
+    if (itemCart) setQuantity(itemCart.quantity);
   }, []);
 
-  const setInputValor = () => {
-    const it = cart.find((i) => +i.id === +product.id);
-    if (it) {
-      setValue(it.quantity);
-      return;
-    }
-    setValue(0);
-  };
-
   useEffect(() => {
-    setInputValor();
-  }, [cart]);
-
-  const removeOrUpdateCart = (quantity, prodId) => {
-    let updatedCart;
-    const shopCart = getCart();
-    if (+quantity === 0) {
-      updatedCart = shopCart.filter((item) => +item.id !== +prodId);
+    const cart = getCart();
+    if (quantity === 0) {
+      const newCart = cart.filter((item) => +item.id !== +product.id);
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      setCart(newCart);
     } else {
-      updatedCart = shopCart.map((item) => {
-        if (+item.id === +prodId) item.quantity = quantity;
-        return item;
-      });
-    }
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    setCart(updatedCart);
-  };
+      const NOT_FOUND = -1;
+      const hasItem = cart.findIndex((item) => +item.id === +product.id);
+      if (hasItem !== NOT_FOUND) {
+        cart[hasItem].quantity = +quantity;
+        cart[hasItem].subTotal = (cart[hasItem].quantity * +product.price).toFixed(2);
+      } else {
+        const { id, name, price } = product;
+        cart.push(
+          { id, name, price, quantity, subTotal: (+price * +quantity).toFixed(2) },
+        );
+      }
 
-  const addOrUpdateCart = (quantity, prodId = null, newItem = null) => {
-    let updatedCart;
-    const cartShop = getCart();
-    if (prodId) {
-      updatedCart = cartShop.map((item) => {
-        if (+item.id === +prodId) item.quantity = quantity;
-        return item;
-      });
-    } else {
-      cartShop.push(newItem);
-      updatedCart = cartShop;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      setCart(cart);
     }
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    setCart(updatedCart);
-  };
-
-  const decQuantity = ({ target: { dataset: { productid } } }) => {
-    const inputQuant = document.querySelector(`[data-productid="${productid}"]`);
-    if (+inputQuant.value <= 1) {
-      inputQuant.value = 0;
-      removeOrUpdateCart(inputQuant.value, productid);
-    } else {
-      inputQuant.value = +inputQuant.value - 1;
-      removeOrUpdateCart(inputQuant.value, productid);
-    }
-  };
-
-  const incQuantity = ({ target: { name, dataset: { productid, unitprice } } }) => {
-    const inputQuant = document.querySelector(`[data-productid="${productid}"]`);
-    const crt = getCart();
-    const existItem = crt.some((c) => +c.id === +productid);
-
-    if (+inputQuant.value === 0 && !existItem) {
-      inputQuant.value = +inputQuant.value + 1;
-      setValue(inputQuant.value);
-      addOrUpdateCart(
-        inputQuant.value,
-        null,
-        { id: productid, name, price: unitprice, quantity: inputQuant.value },
-      );
-    } else {
-      inputQuant.value = +inputQuant.value + 1;
-      addOrUpdateCart(inputQuant.value, productid);
-    }
-  };
+  }, [quantity]);
 
   return (
-    <>
+    <div style={ { display: 'flex', alignItems: 'center', height: '100%' } }>
       <button
         type="button"
         data-testid={ `customer_products__button-card-add-item-${product.id}` }
         name={ product.name }
         data-productid={ product.id }
         data-unitprice={ product.price }
-        onClick={ incQuantity }
+        onClick={ () => { setQuantity(+quantity + 1); } }
       >
         +
       </button>
 
       <input
-        disabled
-        type="text"
-        min="0"
-        onChange={ () => setValue(value) }
-        name={ product.name }
+        onChange={ () => {} }
+        value={ quantity }
+        data-testid={ `customer_products__input-card-quantity-${product.id}` }
         data-productid={ product.id }
         data-unitprice={ product.price }
-        value={ value }
-        data-testid={ `customer_products__input-card-quantity-${product.id}` }
       />
 
       <button
@@ -116,11 +65,11 @@ function ProductSetQty({ product }) {
         name={ product.name }
         data-productid={ product.id }
         data-unitprice={ product.price }
-        onClick={ decQuantity }
+        onClick={ () => { if (+quantity > 0) setQuantity(+quantity - 1); } }
       >
         -
       </button>
-    </>
+    </div>
   );
 }
 
