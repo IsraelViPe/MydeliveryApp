@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
-import { useContext, useEffect } from 'react';
-import OrderContext from '../context/OrderContext';
 
 export default function OrderCard(props) {
   const { order } = props;
-  const { setOrder } = useContext(OrderContext);
-
-  useEffect(() => {
-  });
 
   return (
     <div key={ order.id }>
@@ -21,7 +15,7 @@ export default function OrderCard(props) {
         { order.date }
       </p>
       <p data-testid={ `customer_orders__element-card-price-${order.id}` }>
-        { order.subTotal }
+        { order.totalPrice }
       </p>
     </div>
   );

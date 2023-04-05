@@ -31,7 +31,7 @@ export async function getOrderById(token, id) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.get(`/get-order/${id}`, config);
+  const response = await api.get(`/get-orders/${id}`, config);
   return response;
 }
 
