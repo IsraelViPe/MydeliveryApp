@@ -23,6 +23,7 @@ const errors = [
     { message: 'Nome ou email já cadastrado', statusCode: codes.CONFLICT },
     { message: 'Usuário cadastrado com sucesso', statusCode: codes.CREATED },
     { message: 'Token inválido', statusCode: codes.FORBIDDEN },
+    { message: 'Token not found', statusCode: codes.NOT_FOUND },
     { 
         message: 'O campo "senha" deve ter no mínimo 6 caracteres',
         statusCode: codes.UNPROCESSIBLE_ENTITY,
