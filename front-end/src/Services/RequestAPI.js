@@ -27,6 +27,14 @@ export async function verifyToken(token) {
   return response;
 }
 
+export async function getOrderById(token, id) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get(`/get-order/${id}`, config);
+  return response;
+}
+
 // async function getUser() {
 //   try {
 //     const response = await axios.get('/user?ID=12345');
