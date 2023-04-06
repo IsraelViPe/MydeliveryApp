@@ -40,8 +40,11 @@ export async function verifyToken(token) {
   return response;
 }
 
-export async function getOrderById(id) {
-  const response = await api.get(`/customer/orders/${id}`, config);
+export async function getOrderById(token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get('/user/customer/orders', config);
   return response;
 }
 

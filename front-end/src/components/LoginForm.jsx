@@ -13,6 +13,12 @@ export default function LoginForm() {
   const history = useHistory();
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+      history.push('/customer/products');
+    }
+
     const MIN_PASS_LENGTH = 6;
     const isEmailValid = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
     const isPasswordValid = (password.length >= MIN_PASS_LENGTH);

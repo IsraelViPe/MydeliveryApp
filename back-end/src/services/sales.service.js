@@ -9,11 +9,9 @@ const createTransaction = async (saleInfo, products) => {
         { ...saleInfo }, 
         { transaction: t },
 );
-console.log(newSale.id);
       await SaleProduct.bulkCreate(products.map(({ productId, quantity }) => ({
           saleId: newSale.id, productId, quantity,
         })), { transaction: t });
-        console.log(newSale);
         return newSale;
     } catch (e) {
       return e;
@@ -48,9 +46,7 @@ const create = async (sale) => {
 };
 
 const getAll = async () => {
-  console.log('aqui');
   const response = await Sale.findAll();
-  console.log(response, 'resposta');
 
   if (response.message) {
     return mapError(response.message);
@@ -58,4 +54,9 @@ const getAll = async () => {
   return response;
 };
 
-module.exports = { create, getAll };
+const getSalesByCustomer = async (id) => {
+  const sales = await Sale.findAll({ where: { userId: id } });
+  return { status: 200, message: sales };
+};
+
+module.exports = { create, getAll, getSalesByCustomer };

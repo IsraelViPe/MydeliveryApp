@@ -12,7 +12,7 @@ export default function OrderCard(props) {
         { order.status }
       </p>
       <p data-testid={ `customer_orders__element-order-date-${order.id}` }>
-        { order.date }
+        { order.saleDate }
       </p>
       <p data-testid={ `customer_orders__element-card-price-${order.id}` }>
         { order.totalPrice }
