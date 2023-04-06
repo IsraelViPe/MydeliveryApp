@@ -26,7 +26,6 @@ export default function Register() {
     };
     try {
       const { data } = await postRegister(body);
-      console.log(data);
       localStorage.setItem('user', JSON.stringify({
         name: data.name,
         email: data.email,

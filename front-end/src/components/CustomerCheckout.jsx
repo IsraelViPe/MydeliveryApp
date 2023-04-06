@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CartContext from '../context/CartContext';
 import Cart from './Cart';
 import { getCart, totalValue } from '../utils/localstorage';
-import { getSellers, requestWithToken } from '../Services/RequestAPI';
+import { getSellers, postOrder } from '../Services/RequestAPI';
+import ErrorMessage from './ErrorMessage';
 
 export default function CustomerCheckout() {
   const { cart, newCart, totalCart, newValue } = useContext(CartContext);
-  // const history = useHistory();
+  const history = useHistory();
   const [sellers, setSellers] = useState([]);
-  const [seller, setSeller] = useState(0);
+  const [selectedSeller, setSelectedSeller] = useState('');
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState(0);
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const prefix = 'customer_checkout__';
 
@@ -20,32 +23,34 @@ export default function CustomerCheckout() {
     newValue(totalValue());
 
     async function fetchData() {
-      const result = await getSellers();
-      setSellers(result);
+      const { data } = await getSellers();
+      setSellers(data);
+      setSelectedSeller(data[0].id);
     }
-
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setSeller(sellers[0]);
-  }, [sellers]);
-
-  const sale = async () => {
+  const sendOrder = async () => {
     const { token } = JSON.parse(localStorage.getItem('user'));
-    const response = await requestWithToken('/sales', {
-      sellerId: 5,
-      totalPrice: totalCart,
-      deliveryAddress: address,
-      deliveryNumber: Number(number),
-      products: cart,
-    }, token);
-    console.log(response);
-    // history.push(`/customer/orders/${response}`);
-  };
 
-  const selSeller = (e) => {
-    setSeller(e.target.value);
+    try {
+      setShowError(false);
+      const { data } = await postOrder('/sales', {
+        sellerId: +selectedSeller,
+        totalPrice: Number(totalCart.replace(',', '.')),
+        deliveryAddress: address,
+        deliveryNumber: Number(number),
+        saleDate: new Date().toISOString(),
+        status: 'Pendente',
+        products: cart.map(({ id, quantity }) => ({ productId: id, quantity })),
+      }, token);
+
+      history.push(`/customer/orders/${data.id}`);
+    } catch (e) {
+      const { response } = error;
+      setErrorMsg(response.data.message);
+      setShowError(true);
+    }
   };
 
   return (
@@ -70,6 +75,7 @@ export default function CustomerCheckout() {
                 key={ i }
                 item={ item }
                 id={ i }
+                prefix={ prefix }
               />))}
           </tbody>
         </table>
@@ -80,11 +86,11 @@ export default function CustomerCheckout() {
         </button>
         <select
           data-testid={ `${prefix}select-seller` }
-          value={ seller }
-          onClick={ selSeller }
+          value={ selectedSeller }
+          onChange={ (e) => setSelectedSeller(e.target.value) }
         >
-          {sellers.map((sellr) => (
-            <option value={ sellr.id } key={ sellr.id }>{sellr.name}</option>))}
+          {sellers.map((sell) => (
+            <option value={ sell.id } key={ sell.id }>{sell.name}</option>))}
         </select>
         <input
           type="text"
@@ -104,31 +110,14 @@ export default function CustomerCheckout() {
             type="button"
             data-testid={ `${prefix}button-submit-order` }
             className="btn-fin-pedido"
-            onClick={ sale }
+            onClick={ sendOrder }
             disabled={ cart.length < 1 }
           >
             FINALIZAR PEDIDO
           </button>
         </div>
+        { showError && <ErrorMessage ErrorMsg={ errorMsg } /> }
       </div>
     </div>
   );
 }
-
-// { /* <table>
-//   <thead>
-//     <tr>
-//       <th>Item</th>
-//       <th>Descrição</th>
-//       <th>Quantidade</th>
-//       <th>Valor Unitário</th>
-//       <th>Sub-total</th>
-//       <th>Remover Item</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     {
-//       // map no cart
-//     }
-//   </tbody>
-// </table> */ }

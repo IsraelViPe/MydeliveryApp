@@ -5,8 +5,7 @@ const SalesController = require('../controllers/sales.controller');
 
 const router = express.Router();
 
-router.post('/', SalesController.create);
-router.get('/', SalesController.getAll);
 router.post('/', verifyToken, SalesController.create);
+router.get('/', SalesController.getAll);
 
 module.exports = router; 
