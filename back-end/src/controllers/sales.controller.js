@@ -1,5 +1,4 @@
 const SaleService = require('../services/sales.service');
-// const IndexService = require('../services/index.service');
 const { codes } = require('../utils/errorMap');
 
 const create = async (req, res, next) => {
@@ -13,26 +12,17 @@ const create = async (req, res, next) => {
   return res.status(codes.CREATED).json(response);
 };
 
-const getOrdersById = async (req, res, next) => {
-  const id = req.params;
-  console.log(id);
-  // const { authorization } = req.headers;
-
-  // const response = await IndexService.tokenverify(authorization);
-  // console.log(response);
-  // if (response.statusCode) {
-  //   next(response);
-  //   return;
-  // }
-
-  const result = await SaleService.getOrdersById(id);
-
-  if (result.statusCode) {
-    next(result);
-    return;
+const getSalesByCustomer = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { status, message } = await SaleService.getSalesByCustomer(id);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
   }
-
-  return res.status(codes.OK).json(result);
 };
 
-module.exports = { create, getOrdersById };
+module.exports = { 
+  create,
+  getSalesByCustomer,
+};
