@@ -41,9 +41,6 @@ export async function verifyToken(token) {
 }
 
 export async function getOrderById(id) {
-  const config = {
-    headers: { Authorization: token },
-  };
   const response = await api.get(`/customer/orders/${id}`, config);
   return response;
 }
