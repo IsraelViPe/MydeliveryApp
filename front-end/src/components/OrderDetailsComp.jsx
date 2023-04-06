@@ -1,74 +1,102 @@
-// import React, { useContext, useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
-// import CartContext from '../context/CartContext';
-import Cart from './Cart';
-// import { getCart, totalValue } from '../utils/localstorage';
-// import { getSellers, postOrder } from '../Services/RequestAPI';
-import ErrorMessage from './ErrorMessage';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import CartContext from '../context/CartContext';
+// import Cart from './Cart';
+import { totalValue } from '../utils/localstorage';
 
 export default function OrderDetailsComp() {
-  // const { cart, newCart, totalCart, newValue } = useContext(CartContext);
-  // const history = useHistory();
-  // const [sellers, setSellers] = useState([]);
-  // const [selectedSeller, setSelectedSeller] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [number, setNumber] = useState(0);
-  // const [showError, setShowError] = useState(false);
-  // const [errorMsg, setErrorMsg] = useState('');
+  const { totalCart, newValue } = useContext(CartContext);
+  const [order, setOrder] = useState();
 
   const prefix = 'customer_order_details__';
+  const { id: idOrder } = useParams();
+  console.log(idOrder);
 
-  // useEffect(() => {
-  //   newCart(getCart());
-  //   newValue(totalValue());
+  const updateStatus = () => 'atualiza status no banco';
 
-  //   async function fetchData() {
-  //     const { data } = await getSellers();
-  //     setSellers(data);
-  //     setSelectedSeller(data[0].id);
-  //   }
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    newValue(totalValue());
+    const getOrderById = (id) => ({
+      id,
+      totalPrice: 35.98,
+      saleDate: '2023-04-06T01:05:16.798Z',
+      status: 'pendente',
+      seller: {
+        id: 1,
+        name: 'Fulana Pereira',
+      },
+      products: [
+        {
+          id: 1,
+          name: 'Skol Lata 250ml',
+          price: '2.20',
+          quantity: 4,
+          subTotal: '8.80',
+        },
+        {
+          id: 2,
+          name: 'Heineken 600ml',
+          price: '7.50',
+          quantity: 3,
+          subTotal: '22.50',
+        },
+        {
+          id: 3,
+          name: 'Antarctica Pilsen 300ml',
+          price: '2.49',
+          quantity: 1,
+          subTotal: '2.49',
+        },
+        {
+          id: 5,
+          name: 'Skol 269ml',
+          price: '2.19',
+          quantity: 1,
+          subTotal: '2.19',
+        },
+      ],
+    });
+    const response = getOrderById(idOrder);
+    console.log(response);
+    setOrder(response);
+  }, []);
 
-  // const sendOrder = async () => {
-  //   const { token } = JSON.parse(localStorage.getItem('user'));
-
-  //   try {
-  //     setShowError(false);
-  //     const { data } = await postOrder('/sales', {
-  //       sellerId: +selectedSeller,
-  //       totalPrice: Number(totalCart.replace(',', '.')),
-  //       deliveryAddress: address,
-  //       deliveryNumber: Number(number),
-  //       saleDate: new Date().toISOString(),
-  //       status: 'Pendente',
-  //       products: cart.map(({ id, quantity }) => ({ productId: id, quantity })),
-  //     }, token);
-
-  //     history.push(`/customer/orders/${data.id}`);
-  //   } catch (e) {
-  //     const { response } = error;
-  //     setErrorMsg(response.data.message);
-  //     setShowError(true);
-  //   }
-  // };
+  console.log(order);
 
   return (
     <div>
       <div>
-        <h3>Finalizar Pedido</h3>
+        <h3>Detalhe do Pedido </h3>
       </div>
       <div>
-        <h3>Detalhes e Endereço para Entrega</h3>
         <table>
-          <thead>
-            <th>Item</th>
-            <th>Descrição</th>
-            <th>Quantidade</th>
-            <th>Valor Unitário</th>
-            <th>Sub-total</th>
-            <th>Remover Item</th>
-          </thead>
+          <th data-testid={ `${prefix}element-order-details-label-order-id` }>
+            Pedido
+            {' '}
+            { order?.id }
+          </th>
+          <th data-testid={ `${prefix}element-order-details-label-seller-name` }>
+            {order?.seller.name}
+          </th>
+          <th data-testid={ `${prefix}element-order-details-label-order-date` }>
+            {order?.saleDate}
+          </th>
+          <th
+            ata-testid={
+              `${prefix}element-order-details-label-delivery-status<index>`
+            }
+          >
+            {order?.status}
+          </th>
+          <th>
+            <button
+              data-testid={ `${prefix}button-delivery-check` }
+              type="button"
+              onClick={ updateStatus }
+            >
+              MARCAR COMO ENTREGUE
+            </button>
+          </th>
           <tbody>
             {/* { cart.map((item, i) => (
               <Cart
@@ -84,39 +112,6 @@ export default function OrderDetailsComp() {
           {' '}
           <span data-testid={ `${prefix}element-order-total-price` }>{totalCart}</span>
         </button>
-        <select
-          data-testid={ `${prefix}select-seller` }
-          value={ selectedSeller }
-          onChange={ (e) => setSelectedSeller(e.target.value) }
-        >
-          {sellers.map((sell) => (
-            <option value={ sell.id } key={ sell.id }>{sell.name}</option>))}
-        </select>
-        <input
-          type="text"
-          data-testid={ `${prefix}input-address` }
-          value={ address }
-          onChange={ (e) => setAddress(e.target.value) }
-        />
-        <input
-          type="number"
-          data-testid={ `${prefix}input-address-number` }
-          value={ number }
-          onChange={ (e) => setNumber(e.target.value) }
-        />
-
-        <div className="btn">
-          <button
-            type="button"
-            data-testid={ `${prefix}button-submit-order` }
-            className="btn-fin-pedido"
-            onClick={ sendOrder }
-            disabled={ cart.length < 1 }
-          >
-            FINALIZAR PEDIDO
-          </button>
-        </div>
-        { showError && <ErrorMessage ErrorMsg={ errorMsg } /> }
       </div>
     </div>
   );

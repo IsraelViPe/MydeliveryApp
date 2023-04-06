@@ -55,10 +55,10 @@ export default function CustomerCheckout() {
 
   return (
     <div>
-      <div className="container-check-order">
+      <div>
         <h3>Finalizar Pedido</h3>
       </div>
-      <div className="container-details">
+      <div>
         <h3>Detalhes e Endereço para Entrega</h3>
         <table>
           <thead>

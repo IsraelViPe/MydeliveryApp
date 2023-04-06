@@ -48,7 +48,6 @@ const create = async (sale) => {
 };
 
 const getAll = async () => {
-  console.log('aqui');
   const response = await Sale.findAll();
   console.log(response, 'resposta');
 
