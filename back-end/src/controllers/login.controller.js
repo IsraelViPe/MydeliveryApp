@@ -4,6 +4,7 @@ const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     const response = await LoginService.login(email, password);
+    console.log(response);
     if (response.statusCode) { 
         next(response);
         return;

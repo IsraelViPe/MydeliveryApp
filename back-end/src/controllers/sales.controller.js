@@ -23,4 +23,18 @@ const getAll = async (_req, res, next) => {
   return res.status(codes.OK).json(response);
 };
 
-module.exports = { create, getAll };
+const getSalesByCustomer = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const { status, message } = await SaleService.getSalesByCustomer(id);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { 
+  create,
+  getAll,
+  getSalesByCustomer,
+};
