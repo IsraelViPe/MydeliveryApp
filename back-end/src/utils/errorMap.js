@@ -16,6 +16,7 @@ const codes = {
 
 const errors = [
     { message: 'Usuário ou senha inválido', statusCode: codes.NOT_FOUND },
+    { message: 'Usuário não encontrado', statusCode: codes.NOT_FOUND },
     { message: 'O campo "email" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
     { message: 'O campo "password" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
     { message: 'O campo "nome" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
