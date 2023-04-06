@@ -1,4 +1,4 @@
-const { Sale, SaleProduct, sequelize } = require('../database/models');
+const { Sale, SaleProduct, sequelize, User, Product } = require('../database/models');
 const { mapError } = require('../utils/errorMap');
 const saleCreateSchema = require('./validations/schemas/SaleCreateSchema');
 
@@ -47,4 +47,37 @@ const create = async (sale) => {
   return response;
 };
 
-module.exports = { create };
+const getSales = async (id) => {
+  const sales = await Sale.findAll({ where: { userId: id } });
+  return { status: 200, message: sales };
+};
+
+const getSalesById = async (id) => {
+  const sale = await Sale.findOne({
+      where: { id },
+      include: [{
+          model: User,
+          as: 'seller',
+          attributes: ['name'],
+      }, {
+          model: Product, as: 'products',
+      }],
+  });
+  return { status: 200, message: sale };
+};
+
+const updateSales = async (id) => {
+  try {
+      const updatedSale = await Sale.update({ status: 'entregue' }, { where: { id } });
+      return { status: 200, message: updatedSale };
+  } catch (error) {
+      return { status: 400, message: { message: error } };
+  }
+};
+
+module.exports = { 
+  create,
+  getSales,
+  getSalesById,
+  updateSales,
+ };

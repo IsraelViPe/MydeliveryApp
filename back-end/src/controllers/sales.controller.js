@@ -12,4 +12,38 @@ const create = async (req, res, next) => {
   return res.status(codes.CREATED).json(response);
 };
 
-module.exports = { create };
+const getSales = async (req, res, next) => {
+  try {
+    const { status, message } = await SaleService.getSales(req.params.id);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSalesById = async (req, res, next) => {
+  const { idVenda } = req.params;
+  try {
+    const { status, message } = await SaleService.getById(idVenda);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateSales = async (req, res, next) => {
+  const { idVenda } = req.params;
+  try {
+    const { status } = await SaleService.updateSales(idVenda);
+    res.status(status).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { 
+  create,
+  getSales,
+  getSalesById,
+  updateSales,
+};
