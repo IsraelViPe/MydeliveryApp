@@ -39,21 +39,3 @@ export async function verifyToken(token) {
   const response = await api.post('/tokenverify', {}, config);
   return response;
 }
-
-export async function getOrderById(token, id) {
-  const config = {
-    headers: { Authorization: token },
-  };
-  const response = await api.get(`/customer/orders/${id}`, config);
-  return response;
-}
-
-// async function getUser() {
-//   try {
-//     const response = await axios.get('/user?ID=12345');
-//     console.log(response);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-// comentou
