@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
-// import OrderCard from './OrderCard';
+import { useHistory } from 'react-router-dom';
+import OrderCard from './OrderCard';
 import { getOrderById } from '../Services/RequestAPI';
 
 export default function CostumerOrders() {
-  // const history = useHistory();
+  const history = useHistory();
   const [orders, setOrders] = useState([]);
-  const userData = localStorage.getItem('user');
+  const userData = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     const { token } = userData;
@@ -20,7 +20,7 @@ export default function CostumerOrders() {
 
   return (
     <div>
-      {/* { orders.length > 0 && orders.map((order, i) => (
+      { orders.length > 0 && orders.map((order, i) => (
         <button
           type="button"
           onClick={ () => history.push(`/customer/orders/${order.id}`) }
@@ -28,8 +28,7 @@ export default function CostumerOrders() {
         >
           <OrderCard order={ order } key={ `order-${i}` } />
         </button>
-      ))} */}
-      { orders }
+      ))}
     </div>
   );
 }
