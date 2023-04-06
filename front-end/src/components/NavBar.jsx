@@ -19,7 +19,6 @@ export default function NavBar() {
 
     if (user.role === 'customer') {
       setRole(user.role);
-      history.push('/customer/products');
     }
 
     switch (user.role) {
