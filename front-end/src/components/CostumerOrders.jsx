@@ -8,8 +8,8 @@ export default function CostumerOrders() {
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
-    const { token, id } = userData;
-    const getOrders = getOrderById(token, id);
+    const { id } = userData;
+    const getOrders = getOrderById(id);
     setOrders(getOrders);
   });
 

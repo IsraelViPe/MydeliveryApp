@@ -40,7 +40,7 @@ export async function verifyToken(token) {
   return response;
 }
 
-export async function getOrderById(token, id) {
+export async function getOrderById(id) {
   const config = {
     headers: { Authorization: token },
   };

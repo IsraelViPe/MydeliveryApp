@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 export default function NavBar() {
   const [userName, setUserName] = useState('');
   const [navTitle, setNavTitle] = useState('');
-  const [role, setRole] = useState(undefined);
+  const [role, setRole] = useState('');
 
   const history = useHistory();
 
@@ -19,6 +19,7 @@ export default function NavBar() {
 
     if (user.role === 'customer') {
       setRole(user.role);
+      history.push('/customer/products');
     }
 
     switch (user.role) {
@@ -40,13 +41,19 @@ export default function NavBar() {
 
   return (
     <nav>
-      <h2 data-testid="customer_products__element-navbar-link-products">{navTitle}</h2>
+      <button
+        type="button"
+        data-testid="customer_products__element-navbar-link-products"
+        onClick={ () => history.push('/customer/products') }
+      >
+        {navTitle}
+      </button>
       {
         role && (
           <button
             type="button"
             data-testid="customer_products__element-navbar-link-orders"
-            onClick={ () => history.push('customer/orders') }
+            onClick={ () => history.push('/customer/orders') }
           >
             Meus Pedidos
           </button>
