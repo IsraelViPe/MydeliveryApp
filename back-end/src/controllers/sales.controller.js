@@ -22,9 +22,9 @@ const getSales = async (req, res, next) => {
 };
 
 const getSalesById = async (req, res, next) => {
-  const { idVenda } = req.params;
+  const { id } = req.params;
   try {
-    const { status, message } = await SaleService.getById(idVenda);
+    const { status, message } = await SaleService.getById(id);
     res.status(status).json(message);
   } catch (error) {
     next(error);
@@ -32,9 +32,9 @@ const getSalesById = async (req, res, next) => {
 };
 
 const updateSales = async (req, res, next) => {
-  const { idVenda } = req.params;
+  const { id } = req.params;
   try {
-    const { status } = await SaleService.updateSales(idVenda);
+    const { status } = await SaleService.updateSales(id);
     res.status(status).json();
   } catch (error) {
     next(error);
