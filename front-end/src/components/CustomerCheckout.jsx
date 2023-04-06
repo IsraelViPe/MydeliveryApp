@@ -83,7 +83,7 @@ export default function CustomerCheckout() {
           value={ seller }
           onClick={ selSeller }
         >
-          {sellers.map((sellr) => (
+          {(Object.values(sellers)).map((sellr) => (
             <option value={ sellr.id } key={ sellr.id }>{sellr.name}</option>))}
         </select>
         <input

@@ -38,7 +38,6 @@ export default function Cart(props) {
 
   return (
     <tr>
-      {console.log(typeof id)}
       <td
         data-testid={ `${prefix}element-order-table-item-number-${id}` }
       >
