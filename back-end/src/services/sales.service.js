@@ -47,6 +47,17 @@ const create = async (sale) => {
   return response;
 };
 
+const getAll = async () => {
+  console.log('aqui');
+  const response = await Sale.findAll();
+  console.log(response, 'resposta');
+
+  if (response.message) {
+    return mapError(response.message);
+  }
+  return response;
+};
+
 const getSalesByCustomer = async (id) => {
   const sales = await Sale.findAll({ where: { userId: id } });
   return { status: 200, message: sales };
@@ -54,5 +65,6 @@ const getSalesByCustomer = async (id) => {
 
 module.exports = { 
   create,
+  getAll,
   getSalesByCustomer,
  };

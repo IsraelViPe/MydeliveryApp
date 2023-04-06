@@ -19,6 +19,19 @@ export async function getAllProducts() {
   return response;
 }
 
+export async function getSellers() {
+  const response = await api.get('/user/sellers');
+  return response;
+}
+
+export async function postOrder(endpoint, body, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.post(endpoint, body, config);
+  return response;
+}
+
 export async function verifyToken(token) {
   const config = {
     headers: { Authorization: token },

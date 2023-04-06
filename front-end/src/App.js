@@ -5,6 +5,7 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Products from './pages/Products/Products';
 import Orders from './pages/Orders/Orders';
+import Checkout from './pages/CustomerCheckout/Checkout';
 import CartProvider from './context/CartProvider';
 import './App.css';
 
@@ -18,6 +19,7 @@ export default function App() {
           <Route exact path="/register" component={ Register } />
           <Route exact path="/customer/products" component={ Products } />
           <Route exact path="/costumer/orders" component={ Orders } />
+          <Route exact path="/customer/checkout" component={ Checkout } />
         </Switch>
       </CartProvider>
     </DeliveryProvider>
