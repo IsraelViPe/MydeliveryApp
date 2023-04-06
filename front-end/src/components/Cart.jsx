@@ -5,14 +5,17 @@ import CartContext from '../context/CartContext';
 import { getCart, totalValue } from '../utils/localstorage';
 
 export default function Cart(props) {
-  const { item, id } = props;
-
-  const prefix = 'customer_checkout__';
+  const { item, id, prefix } = props;
 
   const history = useHistory();
   const { cart, newCart, newValue } = useContext(CartContext);
 
   const [checkout, setCheckout] = useState(false);
+
+  useEffect(() => {
+    if (history.location.pathname === '/customer/checkout') setCheckout(true);
+    newCart(getCart());
+  }, []);
 
   const removeItem = () => {
     const newCartItens = cart.filter((itemCart) => itemCart.id !== item.id);
@@ -21,7 +24,7 @@ export default function Cart(props) {
     newValue(totalValue());
   };
 
-  const removeButton = (
+  const showRemoveButton = (
     <button
       type="button"
       data-testid={ `${prefix}element-order-table-remove-${id}` }
@@ -30,11 +33,6 @@ export default function Cart(props) {
       Remover
     </button>
   );
-
-  useEffect(() => {
-    if (history.location.pathname === '/customer/checkout') setCheckout(true);
-    newCart(getCart());
-  }, []);
 
   return (
     <tr>
@@ -56,14 +54,14 @@ export default function Cart(props) {
       <td
         data-testid={ `${prefix}element-order-table-unit-price-${id}` }
       >
-        {(item.price).replace(/\./, ',')}
+        {item.price.replace('.', ',')}
       </td>
       <td
         data-testid={ `${prefix}element-order-table-sub-total-${id}` }
       >
-        {(item.subTotal).replace(/\./, ',')}
+        {item.subTotal.replace('.', ',')}
       </td>
-      {checkout ? removeButton : null}
+      {checkout ? showRemoveButton : null}
       <td />
     </tr>
   );

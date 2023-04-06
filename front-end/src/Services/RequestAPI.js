@@ -24,13 +24,12 @@ export async function getSellers() {
   return response;
 }
 
-export async function requestWithToken(endpoint, body, token) {
+export async function postOrder(endpoint, body, token) {
   const config = {
     headers: { Authorization: token },
   };
-  const data = await api.post(endpoint, body, config);
-  console.log(data);
-  return 1;
+  const response = await api.post(endpoint, body, config);
+  return response;
 }
 
 export async function verifyToken(token) {
@@ -40,13 +39,3 @@ export async function verifyToken(token) {
   const response = await api.post('/tokenverify', {}, config);
   return response;
 }
-
-// async function getUser() {
-//   try {
-//     const response = await axios.get('/user?ID=12345');
-//     console.log(response);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-// comentou

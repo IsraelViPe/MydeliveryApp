@@ -26,17 +26,3 @@ const saleCreateSchema = Joi.object({
 });
 
 module.exports = saleCreateSchema;
-
-// {
-//   "userId": 3,
-//   "sellerId":2,
-//   "totalPrice":11.90,
-//   "deliveryAddress": "Travessa Terceira, Bairro Muruci",
-//   "deliveryNumber": "198",
-//   "saleDate":"2023-03-31T20:29:22.355Z",
-//   "status": "pendente",
-//   "products": [
-//      { "productId": 1, "quantity": 2 },
-//      {"productId": 2, "quantity": 1}
-//   ]
-// }

@@ -26,6 +26,7 @@ export default function LoginForm() {
     try {
       setLoginError(false);
       const { data } = await postLogin({ email, password });
+      console.log(data);
       localStorage.setItem('user', JSON.stringify({
         name: data.name,
         email: data.email,
