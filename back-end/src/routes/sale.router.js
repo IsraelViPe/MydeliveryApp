@@ -8,4 +8,4 @@ const router = express.Router();
 router.post('/', verifyToken, SalesController.create);
 router.get('/', SalesController.getAll);
 
-module.exports = router;
+module.exports = router; 

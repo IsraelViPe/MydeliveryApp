@@ -8,8 +8,8 @@ const createTransaction = async (saleInfo, products) => {
       const newSale = await Sale.create(
         { ...saleInfo }, 
         { transaction: t },
-      );
-      console.log(newSale.id);
+);
+console.log(newSale.id);
       await SaleProduct.bulkCreate(products.map(({ productId, quantity }) => ({
           saleId: newSale.id, productId, quantity,
         })), { transaction: t });
@@ -58,13 +58,4 @@ const getAll = async () => {
   return response;
 };
 
-const getSalesByCustomer = async (id) => {
-  const sales = await Sale.findAll({ where: { userId: id } });
-  return { status: 200, message: sales };
-};
-
-module.exports = { 
-  create,
-  getAll,
-  getSalesByCustomer,
- };
+module.exports = { create, getAll };

@@ -39,6 +39,7 @@ export async function verifyToken(token) {
   const response = await api.post('/tokenverify', {}, config);
   return response;
 }
+<<<<<<< HEAD
 
 export async function getOrderById(id) {
   const config = {
@@ -57,3 +58,5 @@ export async function getOrderById(id) {
 //   }
 // }
 // comentou
+=======
+>>>>>>> 884c6335ac2685d40746331269518375db7a9f74
