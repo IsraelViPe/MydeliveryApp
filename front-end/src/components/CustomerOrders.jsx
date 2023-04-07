@@ -8,14 +8,11 @@ export default function CostumerOrders() {
   const [orders, setOrders] = useState([]);
   const userData = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
+  useEffect(async () => {
     const { token } = userData;
-    async function getOrdersFunction() {
-      const getOrders = await getOrderById(token);
-      setOrders(getOrders);
-    }
-    getOrdersFunction();
-    // console.log(getOrders);
+    const { data } = await getOrderById(token);
+    setOrders(data);
+    console.log(data);
   }, []);
 
   return (
@@ -29,6 +26,7 @@ export default function CostumerOrders() {
           <OrderCard order={ order } key={ `order-${i}` } />
         </button>
       ))}
+      { orders.length === 0 && (<h4>Não há pedidos</h4>) }
     </div>
   );
 }
