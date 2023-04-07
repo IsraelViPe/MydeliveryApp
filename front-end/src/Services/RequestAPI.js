@@ -39,3 +39,19 @@ export async function verifyToken(token) {
   const response = await api.post('/tokenverify', {}, config);
   return response;
 }
+
+export async function getOrderDetailById(id, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get(`/orders/${id}`, {}, config);
+  return response;
+}
+
+export async function updateOrderStatus(id, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.put(`/sales/${id}`, {}, config);
+  return response;
+}

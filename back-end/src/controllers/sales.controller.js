@@ -3,7 +3,6 @@ const { codes } = require('../utils/errorMap');
 
 const create = async (req, res, next) => {
   const createInfo = { userId: +req.user, ...req.body };
-  console.log(createInfo);
   const response = await SaleService.create(createInfo);
 
   if (response.statusCode) {

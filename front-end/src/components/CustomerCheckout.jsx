@@ -47,7 +47,7 @@ export default function CustomerCheckout() {
 
       history.push(`/customer/orders/${data.id}`);
     } catch (e) {
-      const { response } = error;
+      const { response } = e;
       setErrorMsg(response.data.message);
       setShowError(true);
     }
