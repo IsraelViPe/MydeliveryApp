@@ -31,7 +31,7 @@ export default function NavBar() {
     default:
       setNavTitle('Produtos');
     }
-  }, []);
+  }, [history]);
 
   const buttonLogout = () => {
     localStorage.removeItem('user');
