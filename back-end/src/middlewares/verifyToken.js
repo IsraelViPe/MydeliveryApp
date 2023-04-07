@@ -15,8 +15,8 @@ const verifyToken = (req, res, next) => {
             next(mapError('Token inválido'));
             return;
         }
+        console.log(decoded);
         req.user = decoded.sub;
-        console.log(decoded, 'aqui');
         next();
     });
 };
