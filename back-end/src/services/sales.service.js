@@ -59,4 +59,9 @@ const getSalesByCustomer = async (id) => {
   return { status: 200, message: sales };
 };
 
-module.exports = { create, getAll, getSalesByCustomer };
+const getSalesBySeller = async (id) => {
+  const sales = await Sale.findAll({ where: { sellerId: id } });
+  return { status: 200, message: sales };
+};
+
+module.exports = { create, getAll, getSalesByCustomer, getSalesBySeller };
