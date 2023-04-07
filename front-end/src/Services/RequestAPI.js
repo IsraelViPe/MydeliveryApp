@@ -41,10 +41,14 @@ export async function verifyToken(token) {
 }
 
 export async function getOrderDetailById(id, token) {
+  console.log('aqui');
+  console.log(token);
+  console.log(id);
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.get(`/orders/${id}`, {}, config);
+  const response = await api.get(`/customer/orders/${id}`, {}, config);
+  console.log(response);
   return response;
 }
 

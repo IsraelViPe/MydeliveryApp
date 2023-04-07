@@ -24,12 +24,16 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
   });
 
-  Sale.associate = ({User}) => {
+  Sale.associate = ({ User }) => {
     Sale.belongsTo(User, {
-      as: 'users',
-      foreignKey: ['userId', 'sellerId'],
-    });
-  };
+      as: 'user',
+      foreignKey: 'id'
+    })
+    Sale.belongsTo(User, {
+      as: 'seller',
+      foreignKey: 'id'
+    })
+  }
 
   return Sale;
 };

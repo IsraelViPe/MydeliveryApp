@@ -12,6 +12,7 @@ const codes = {
     NOT_FOUND: 404,
     CONFLICT: 409,
     FORBIDDEN: 403,
+    SERVER_ERROR: 500,
 };
 
 const errors = [
@@ -46,6 +47,10 @@ const errors = [
     { message: 'O campo "productId" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
     { message: 'O campo "quantity" deve ser informado', statusCode: codes.UNPROCESSIBLE_ENTITY },
     { message: 'O campo "quantity" deve ter no mínimo 1', statusCode: codes.UNPROCESSIBLE_ENTITY },
+    { message: 'Não foi possível atualizar o status da venda com sucesso', 
+    statusCode: codes.SERVER_ERROR },
+    { message: 'Usuário não encontrado', statusCode: codes.NOT_FOUND },
+    { message: 'Venda não encontrada', statusCode: codes.NOT_FOUND },
 
 ];
 

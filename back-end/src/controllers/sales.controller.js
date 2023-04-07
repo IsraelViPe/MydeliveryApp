@@ -22,4 +22,15 @@ const getAll = async (_req, res, next) => {
   return res.status(codes.OK).json(response);
 };
 
-module.exports = { create, getAll };
+const updateStatus = async (req, res, next) => {
+  const { status } = req.body;
+  const { id } = req.params;
+
+  const response = await SaleService.updateStatus(id, status);
+  if (response.statusCode) { 
+    next(response);
+}
+  res.status(codes.OK).json(response);
+};
+
+module.exports = { create, getAll, updateStatus };

@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom';
 import CartContext from '../context/CartContext';
 import Cart from './Cart';
 import { totalValue } from '../utils/localstorage';
-import { updateOrderStatus } from '../Services/RequestAPI';
+import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
+import ErrorMessage from './ErrorMessage';
 
 export default function OrderDetailsComp() {
   const { totalCart, newValue } = useContext(CartContext);
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const prefix = 'customer_order_details__';
   const { id: idOrder } = useParams();
@@ -16,10 +18,13 @@ export default function OrderDetailsComp() {
 
   const updateStatus = async () => {
     try {
+      setErrorMsg(null);
       const { data } = await updateOrderStatus(idOrder, token);
-      order.status = data.status;
+      setOrder((prevOrder) => ({ ...prevOrder, status: data.status }));
     } catch (e) {
-      console.error(response.data.message);
+      setIsLoading(false);
+      const { response } = e;
+      setErrorMsg(response?.data.message);
     }
   };
 
@@ -34,9 +39,9 @@ export default function OrderDetailsComp() {
       setErrorMsg(null);
       setIsLoading(false);
     } catch (e) {
-      const { response } = e;
       setIsLoading(false);
-      console.error(response.data.message);
+      const { response } = e;
+      setErrorMsg(response?.data.message);
     }
   }, []);
 
@@ -93,6 +98,7 @@ export default function OrderDetailsComp() {
           </button>
         </div>
       )}
+      { errorMsg && <ErrorMessage ErrorMsg={ errorMsg } /> }
     </div>
   );
 }

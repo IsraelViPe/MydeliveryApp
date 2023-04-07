@@ -16,7 +16,7 @@ console.log(newSale.id);
         console.log(newSale);
         return newSale;
     } catch (e) {
-      return e;
+      return mapError(e.message);
     }
   });
   return result;
@@ -49,12 +49,29 @@ const create = async (sale) => {
 
 const getAll = async () => {
   const response = await Sale.findAll();
-  console.log(response, 'resposta');
-
-  if (response.message) {
-    return mapError(response.message);
+  
+  if (!response) {
+    return mapError('Internal Server Error');
   }
   return response;
 };
 
-module.exports = { create, getAll };
+const updateStatus = async (id, status) => {
+    const sale = await Sale.findOne({ where: { id } });
+  
+    if (!sale) return mapError('Venda não encontrada');
+
+    console.log('aqui eu chego');
+    const [result] = await Sale.update({ status }, { where: { id } });
+
+    console.log(result);
+    return result;
+    // if (numAffectedRows !== 1) {
+    //   return mapError('Não foi possível atualizar o status da venda com sucesso');
+    // }
+    // console.log(numAffectedRows);
+
+    // return affectedRows[0];
+};
+
+module.exports = { create, getAll, updateStatus };
