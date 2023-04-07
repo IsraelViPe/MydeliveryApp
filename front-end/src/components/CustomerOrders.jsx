@@ -8,12 +8,15 @@ export default function CostumerOrders() {
   const [orders, setOrders] = useState([]);
   const userData = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(async () => {
+  useEffect(() => {
     const { token } = userData;
-    const { data } = await getOrderById(token);
-    setOrders(data);
-    console.log(data);
-  }, []);
+
+    async function fetchData() {
+      const { data } = await getOrderById(token);
+      setOrders(data);
+    }
+    fetchData();
+  }, [userData]);
 
   return (
     <div>

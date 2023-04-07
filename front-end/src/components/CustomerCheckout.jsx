@@ -28,7 +28,7 @@ export default function CustomerCheckout() {
       setSelectedSeller(data[0].id);
     }
     fetchData();
-  }, []);
+  }, [newCart, newValue]);
 
   const sendOrder = async () => {
     const { token } = JSON.parse(localStorage.getItem('user'));
