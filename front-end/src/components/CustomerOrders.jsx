@@ -16,7 +16,7 @@ export default function CostumerOrders() {
       setOrders(data);
     }
     fetchData();
-  }, [userData]);
+  }, []);
 
   return (
     <div>
