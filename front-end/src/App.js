@@ -8,6 +8,7 @@ import Products from './pages/Products/Products';
 import Checkout from './pages/CustomerCheckout/Checkout';
 import Orders from './pages/Orders/Orders';
 import CartProvider from './context/CartProvider';
+import OrderDetails from './pages/OrderDetails.js/OrderDetails';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route exact path="/customer/products" component={ Products } />
           <Route exact path="/customer/checkout" component={ Checkout } />
           <Route exact path="/customer/orders" component={ Orders } />
+          <Route exact path="/customer/orders/:id" component={ OrderDetails } />
         </Switch>
       </CartProvider>
     </DeliveryProvider>

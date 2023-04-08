@@ -2,7 +2,7 @@ const { Sale, SaleProduct, Product, User } = require('../database/models');
 
 const order = async (req, res) => {
     const { id: saleId } = req.params;
-    const addAttributes = ['id', 'totalPrice', 'saleDate', 'status', 'userId'];
+    const addAttributes = ['id', 'sellerId', 'totalPrice', 'saleDate', 'status', 'userId'];
     
     const sale = await Sale.findOne({ where: { id: saleId },
     attributes: addAttributes,
@@ -12,9 +12,9 @@ const order = async (req, res) => {
     },
     ] });
 
-    const { products: p, userId: uId, totalPrice, saleDate, status } = sale;
+    const { products: p, sellerId: sId, totalPrice, saleDate, status } = sale;
     const seller = await User
-        .findOne({ where: { id: uId }, raw: true, attributes: ['id', 'name'] });
+        .findOne({ where: { id: sId }, raw: true, attributes: ['id', 'name'] });
 
     const products = p.map((prod) => {
         const { id, name, price, SaleProduct: { quantity } } = prod; 

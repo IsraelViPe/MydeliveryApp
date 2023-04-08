@@ -9,7 +9,6 @@ const register = async (req, res, next) => {
     next(response);
     return;
   }
-  console.log(response);
   return res.status(201).json(response);
 };
 

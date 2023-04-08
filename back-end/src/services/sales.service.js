@@ -14,7 +14,7 @@ const createTransaction = async (saleInfo, products) => {
         })), { transaction: t });
         return newSale;
     } catch (e) {
-      return e;
+      return mapError(e.message);
     }
   });
   return result;
@@ -47,9 +47,9 @@ const create = async (sale) => {
 
 const getAll = async () => {
   const response = await Sale.findAll();
-
-  if (response.message) {
-    return mapError(response.message);
+  
+  if (!response) {
+    return mapError('Internal Server Error');
   }
   return response;
 };
@@ -64,4 +64,18 @@ const getSalesBySeller = async (id) => {
   return { status: 200, message: sales };
 };
 
-module.exports = { create, getAll, getSalesByCustomer, getSalesBySeller };
+const updateStatus = async (id, status) => {
+    const sale = await Sale.findOne({ where: { id } });
+  
+    if (!sale) return mapError('Venda não encontrada');
+
+    const [result] = await Sale.update({ status }, { where: { id } });
+
+    if (result <= 0) return mapError('Não foi possível atualizar o status da venda');
+
+    const updatedSale = await Sale.findOne({ where: { id } });
+    
+    return updatedSale;
+};
+
+module.exports = { create, getAll, updateStatus, getSalesByCustomer, getSalesBySeller };

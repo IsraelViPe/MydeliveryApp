@@ -48,12 +48,19 @@ export async function getOrderById(token) {
   return response;
 }
 
-// async function getUser() {
-//   try {
-//     const response = await axios.get('/user?ID=12345');
-//     console.log(response);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-// comentou
+export async function getOrderDetailById(id, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get(`/customer/orders/${id}`, {}, config);
+
+  return response;
+}
+
+export async function updateOrderStatus(id, status, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.put(`/sales/update/status/${id}`, status, config);
+  return response;
+}
