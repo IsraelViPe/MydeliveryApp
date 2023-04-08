@@ -33,4 +33,24 @@ const updateStatus = async (req, res, next) => {
   res.status(codes.OK).json(response);
 };
 
-module.exports = { create, getAll, updateStatus };
+const getSalesByCustomer = async (req, res, next) => {
+  const id = req.user;
+  try {
+    const { status, message } = await SaleService.getSalesByCustomer(+id);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSalesBySeller = async (req, res, next) => {
+  const id = req.user;
+  try {
+    const { status, message } = await SaleService.getSalesBySeller(+id);
+    res.status(status).json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, getAll, getSalesByCustomer, getSalesBySeller, updateStatus };
