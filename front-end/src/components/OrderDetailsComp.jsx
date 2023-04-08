@@ -5,6 +5,7 @@ import Cart from './Cart';
 import { totalValue } from '../utils/localstorage';
 import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
+import formatDate from '../utils/formatDate';
 
 export default function OrderDetailsComp() {
   const { totalCart, newValue } = useContext(CartContext);
@@ -63,11 +64,11 @@ export default function OrderDetailsComp() {
               {order?.seller.name}
             </th>
             <th data-testid={ `${prefix}element-order-details-label-order-date` }>
-              {order?.saleDate}
+              {formatDate(order?.saleDate)}
             </th>
             <th
-              ata-testid={
-                `${prefix}element-order-details-label-delivery-status<index>`
+              data-testid={
+                `${prefix}element-order-details-label-delivery-status${idOrder}`
               }
             >
               {order?.status}
@@ -76,6 +77,7 @@ export default function OrderDetailsComp() {
               <button
                 data-testid={ `${prefix}button-delivery-check` }
                 type="button"
+                disabled
                 onClick={ updateStatus }
               >
                 MARCAR COMO ENTREGUE
