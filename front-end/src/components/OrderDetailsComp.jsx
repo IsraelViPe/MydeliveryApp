@@ -19,7 +19,7 @@ export default function OrderDetailsComp() {
   const updateStatus = async () => {
     try {
       setErrorMsg(null);
-      const { data } = await updateOrderStatus(idOrder, token);
+      const { data } = await updateOrderStatus(idOrder, { status: 'Entregue' }, token);
       setOrder((prevOrder) => ({ ...prevOrder, status: data.status }));
     } catch (e) {
       setIsLoading(false);

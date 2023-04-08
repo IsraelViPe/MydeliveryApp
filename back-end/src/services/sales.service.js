@@ -61,17 +61,13 @@ const updateStatus = async (id, status) => {
   
     if (!sale) return mapError('Venda não encontrada');
 
-    console.log('aqui eu chego');
     const [result] = await Sale.update({ status }, { where: { id } });
 
-    console.log(result);
-    return result;
-    // if (numAffectedRows !== 1) {
-    //   return mapError('Não foi possível atualizar o status da venda com sucesso');
-    // }
-    // console.log(numAffectedRows);
+    if (result <= 0) return mapError('Não foi possível atualizar o status da venda');
 
-    // return affectedRows[0];
+    const updatedSale = await Sale.findOne({ where: { id } });
+    
+    return updatedSale;
 };
 
 module.exports = { create, getAll, updateStatus };

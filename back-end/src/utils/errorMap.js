@@ -51,6 +51,7 @@ const errors = [
     statusCode: codes.SERVER_ERROR },
     { message: 'Usuário não encontrado', statusCode: codes.NOT_FOUND },
     { message: 'Venda não encontrada', statusCode: codes.NOT_FOUND },
+    { message: 'Não foi possível atualizar o status da venda', statusCode: codes.SERVER_ERROR },
 
 ];
 

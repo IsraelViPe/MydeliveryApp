@@ -52,10 +52,10 @@ export async function getOrderDetailById(id, token) {
   return response;
 }
 
-export async function updateOrderStatus(id, token) {
+export async function updateOrderStatus(id, status, token) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.put(`/sales/${id}`, {}, config);
+  const response = await api.put(`/sales/update/status/${id}`, status, config);
   return response;
 }
