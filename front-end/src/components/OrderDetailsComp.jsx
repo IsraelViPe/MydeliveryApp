@@ -64,14 +64,9 @@ export default function OrderDetailsComp() {
               {' '}
               { order?.id }
             </th>
-            { role === 'costumer'
-            && (
-              <div>
-                <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
-                  {order?.seller.name}
-                </th>
-              </div>
-            ) }
+            <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
+              {order?.seller.name}
+            </th>
             <th data-testid={ `${prefix()}element-order-details-label-order-date` }>
               {formatDate(order?.saleDate)}
             </th>
@@ -82,46 +77,16 @@ export default function OrderDetailsComp() {
             >
               {order?.status}
             </th>
-            { role === 'customer'
-            && (
-              <div>
-                <th>
-                  <button
-                    data-testid={ `${prefix()}button-delivery-check` }
-                    type="button"
-                    disabled
-                    onClick={ updateStatus }
-                  >
-                    MARCAR COMO ENTREGUE
-                  </button>
-                </th>
-              </div>
-            ) }
-            { role === 'seller'
-            && (
-              <div>
-                <th>
-                  <button
-                    data-testid={ `${prefix()}button-delivery-check` }
-                    type="button"
-                    disabled
-                    onClick={ updateStatus }
-                  >
-                    PREPARAR PEDIDO
-                  </button>
-                </th>
-                <th>
-                  <button
-                    data-testid={ `${prefix()}button-delivery-check` }
-                    type="button"
-                    disabled
-                    onClick={ updateStatus }
-                  >
-                    SAIU PARA ENTREGA
-                  </button>
-                </th>
-              </div>
-            ) }
+            <th>
+              <button
+                data-testid={ `${prefix()}button-delivery-check` }
+                type="button"
+                disabled
+                onClick={ updateStatus }
+              >
+                MARCAR COMO ENTREGUE
+              </button>
+            </th>
             <tbody>
               { order?.products.map((item, i) => (
                 <Cart

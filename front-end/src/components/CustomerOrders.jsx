@@ -7,10 +7,9 @@ export default function CostumerOrders() {
   const history = useHistory();
   const [orders, setOrders] = useState([]);
   const userData = JSON.parse(localStorage.getItem('user'));
+  const { role, token } = userData;
 
   useEffect(() => {
-    const { token } = userData;
-
     async function fetchData() {
       const { data } = await getOrderById(token);
       setOrders(data);
@@ -26,7 +25,7 @@ export default function CostumerOrders() {
           onClick={ () => history.push(`/customer/orders/${order.id}`) }
           key={ `order-${i}` }
         >
-          <OrderCard order={ order } key={ `order-${i}` } />
+          <OrderCard order={ order } role={ role } key={ `order-${i}` } />
         </button>
       ))}
       { orders.length === 0 && (<h4>Não há pedidos</h4>) }
