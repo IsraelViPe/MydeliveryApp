@@ -7,11 +7,9 @@ export default function SellerOrders() {
   const history = useHistory();
   const [orders, setOrders] = useState([]);
   const userData = JSON.parse(localStorage.getItem('user'));
-  const { role } = userData;
+  const { role, token } = userData;
 
   useEffect(() => {
-    const { token } = userData;
-
     async function fetchData() {
       const { data } = await getOrdersBySellerId(token);
       setOrders(data);
