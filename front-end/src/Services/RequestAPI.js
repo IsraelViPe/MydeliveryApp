@@ -57,6 +57,14 @@ export async function getOrderDetailById(id, token) {
   return response;
 }
 
+export async function getOrdersBySellerId(token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get('/user/seller/orders', config);
+  return response;
+}
+
 export async function updateOrderStatus(id, status, token) {
   const config = {
     headers: { Authorization: token },

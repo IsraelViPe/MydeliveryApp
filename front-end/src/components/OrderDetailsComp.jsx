@@ -13,9 +13,13 @@ export default function OrderDetailsComp() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const prefix = 'customer_order_details__';
   const { id: idOrder } = useParams();
-  const { token } = JSON.parse(localStorage.getItem('user'));
+  const { token, role } = JSON.parse(localStorage.getItem('user'));
+
+  const prefix = () => {
+    if (role === 'customer') return 'customer_order_details__';
+    if (role === 'seller') return 'seller_order_details__';
+  };
 
   const updateStatus = async () => {
     try {
@@ -55,27 +59,27 @@ export default function OrderDetailsComp() {
       { !isLoading && (
         <div>
           <table>
-            <th data-testid={ `${prefix}element-order-details-label-order-id` }>
+            <th data-testid={ `${prefix()}element-order-details-label-order-id` }>
               Pedido
               {' '}
               { order?.id }
             </th>
-            <th data-testid={ `${prefix}element-order-details-label-seller-name` }>
+            <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
               {order?.seller.name}
             </th>
-            <th data-testid={ `${prefix}element-order-details-label-order-date` }>
+            <th data-testid={ `${prefix()}element-order-details-label-order-date` }>
               {formatDate(order?.saleDate)}
             </th>
             <th
               data-testid={
-                `${prefix}element-order-details-label-delivery-status${idOrder}`
+                `${prefix()}element-order-details-label-delivery-status${idOrder}`
               }
             >
               {order?.status}
             </th>
             <th>
               <button
-                data-testid={ `${prefix}button-delivery-check` }
+                data-testid={ `${prefix()}button-delivery-check` }
                 type="button"
                 disabled
                 onClick={ updateStatus }
@@ -96,7 +100,9 @@ export default function OrderDetailsComp() {
           <button type="button">
             TOTAL: R$
             {' '}
-            <span data-testid={ `${prefix}element-order-total-price` }>{totalCart}</span>
+            <span data-testid={ `${prefix()}element-order-total-price` }>
+              {totalCart}
+            </span>
           </button>
         </div>
       )}

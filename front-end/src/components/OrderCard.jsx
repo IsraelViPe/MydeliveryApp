@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export default function OrderCard(props) {
-  const { order } = props;
+  const { order, role } = props;
   const { id, status, saleDate, totalPrice } = order;
 
   const NOVE = 9;
@@ -17,18 +17,28 @@ export default function OrderCard(props) {
 
   const formatPrice = (totalPrice).replace(/\./, ',');
 
+  const prefixDataTestId = () => {
+    if (role === 'customer') {
+      return 'customer_orders__element-';
+    }
+
+    if (role === 'seller') {
+      return 'seller_orders__element-';
+    }
+  };
+
   return (
     <div key={ id }>
-      <p data-testid={ `customer_orders__element-order-id-${id}` }>
+      <p data-testid={ `${prefixDataTestId()}order-id-${id}` }>
         {`Pedido ${id}`}
       </p>
-      <p data-testid={ `customer_orders__element-delivery-status-${id}` }>
+      <p data-testid={ `${prefixDataTestId()}delivery-status-${id}` }>
         { status }
       </p>
-      <p data-testid={ `customer_orders__element-order-date-${id}` }>
+      <p data-testid={ `${prefixDataTestId()}order-date-${id}` }>
         { dataFormated }
       </p>
-      <p data-testid={ `customer_orders__element-card-price-${id}` }>
+      <p data-testid={ `${prefixDataTestId()}card-price-${id}` }>
         { formatPrice }
       </p>
     </div>

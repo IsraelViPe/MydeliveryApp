@@ -8,9 +8,19 @@ export default function NavBar() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
+  const defineRoute = () => {
+    if (user.role === 'seller') return '/seller/orders';
+    if (user.role === 'customer') return '/customer/products';
+  };
+
+  const dataTestId = () => {
+    if (user.role === 'customer') return 'products';
+    if (user.role === 'seller') return 'orders';
+  };
+
+  useEffect(() => {
     if (!user) {
       history.push('/login');
     }
@@ -31,7 +41,7 @@ export default function NavBar() {
     default:
       setNavTitle('Produtos');
     }
-  }, [history]);
+  }, []);
 
   const buttonLogout = () => {
     localStorage.removeItem('user');
@@ -42,8 +52,8 @@ export default function NavBar() {
     <nav>
       <button
         type="button"
-        data-testid="customer_products__element-navbar-link-products"
-        onClick={ () => history.push('/customer/products') }
+        data-testid={ `customer_products__element-navbar-link-${dataTestId()}` }
+        onClick={ () => history.push(defineRoute()) }
       >
         {navTitle}
       </button>
