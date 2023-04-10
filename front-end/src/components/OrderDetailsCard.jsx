@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import CartContext from '../context/CartContext';
 import { getCart, totalValue } from '../utils/localstorage';
 
-export default function Cart(props) {
+export default function OrderDetailsCard(props) {
   const { item, id, prefix } = props;
 
   const history = useHistory();
@@ -67,7 +67,7 @@ export default function Cart(props) {
   );
 }
 
-Cart.propTypes = {
+OrderDetailsCard.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
   quantity: PropTypes.number,

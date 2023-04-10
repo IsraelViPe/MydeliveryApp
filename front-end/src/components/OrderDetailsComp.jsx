@@ -1,26 +1,36 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useParams, useHistory } from 'react-router-dom';
 import CartContext from '../context/CartContext';
-import Cart from './Cart';
+import OrderDetailsCard from './OrderDetailsCard';
 import { totalValue } from '../utils/localstorage';
 import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import formatDate from '../utils/formatDate';
 
-export default function OrderDetailsComp() {
+export default function OrderDetailsComp({ prefix }) {
   const { totalCart, newValue } = useContext(CartContext);
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const prefix = 'customer_order_details__';
+  const { location: { pathname } } = useHistory();
+
   const { id: idOrder } = useParams();
   const { token } = JSON.parse(localStorage.getItem('user'));
+  const disablePreparing = (
+    order?.status === 'Pendente'
+   || order?.status === 'Em Trânsito'
+  || order?.status === 'Entregue');
 
-  const updateStatus = async () => {
+  const disableDispatch = order?.status !== 'Preparando';
+
+  const updateStatus = async ({ target: { id } }) => {
+    const status = id;
+
     try {
       setErrorMsg(null);
-      const { data } = await updateOrderStatus(idOrder, { status: 'Entregue' }, token);
+      const { data } = await updateOrderStatus(idOrder, { status }, token);
       setOrder((prevOrder) => ({ ...prevOrder, status: data.status }));
     } catch (e) {
       setIsLoading(false);
@@ -45,6 +55,8 @@ export default function OrderDetailsComp() {
       setErrorMsg(response?.data.message);
     }
   }, []);
+
+  console.log(order);
 
   return (
     <div>
@@ -74,18 +86,45 @@ export default function OrderDetailsComp() {
               {order?.status}
             </th>
             <th>
-              <button
-                data-testid={ `${prefix}button-delivery-check` }
-                type="button"
-                disabled
-                onClick={ updateStatus }
-              >
-                MARCAR COMO ENTREGUE
-              </button>
+              {pathname.includes('/customer/orders/')
+              && (
+                <button
+                  data-testid={ `${prefix}button-delivery-check` }
+                  type="button"
+                  id="Entregue"
+                  // disabled={ order?.status !== 'Em trânsito' }
+                  onClick={ updateStatus }
+                >
+                  MARCAR COMO ENTREGUE
+                </button>
+              )}
+              { pathname.includes('/seller/orders')
+                && (
+                  <>
+                    <button
+                      data-testid={ `${prefix}button-preparing-check` }
+                      type="button"
+                      id="Preparando"
+                      disabled={ disablePreparing }
+                      onClick={ updateStatus }
+                    >
+                      PREPARANDO PEDIDO
+                    </button>
+                    <button
+                      data-testid={ `${prefix}button-dispatch-check` }
+                      type="button"
+                      disabled={ disableDispatch }
+                      id="Em Trânsito"
+                      onClick={ updateStatus }
+                    >
+                      SAIU PARA ENTREGA
+                    </button>
+                  </>
+                ) }
             </th>
             <tbody>
               { order?.products.map((item, i) => (
-                <Cart
+                <OrderDetailsCard
                   key={ i }
                   item={ item }
                   id={ i }
@@ -104,3 +143,7 @@ export default function OrderDetailsComp() {
     </div>
   );
 }
+
+OrderDetailsComp.propTypes = {
+  prefix: PropTypes.string,
+}.isRequired;
