@@ -9,7 +9,11 @@ import Checkout from './pages/CustomerCheckout/Checkout';
 import Orders from './pages/Orders/Orders';
 import CartProvider from './context/CartProvider';
 import OrderDetails from './pages/OrderDetails.js/OrderDetails';
+<<<<<<< HEAD
 import SellerOrderDetails from './pages/SellersOrderDetails/SellerOrderDetails';
+=======
+import SellerOrders from './pages/SellerOrders/SellerOrders';
+>>>>>>> main-group-15-development
 
 export default function App() {
   return (
@@ -23,7 +27,12 @@ export default function App() {
           <Route exact path="/customer/checkout" component={ Checkout } />
           <Route exact path="/customer/orders" component={ Orders } />
           <Route exact path="/customer/orders/:id" component={ OrderDetails } />
+<<<<<<< HEAD
           <Route exact path="/seller/orders/:id" component={ SellerOrderDetails } />
+=======
+          <Route exact path="/seller/orders" component={ SellerOrders } />
+          <Route exact path="/seller/orders/:id" component={ OrderDetails } />
+>>>>>>> main-group-15-development
         </Switch>
       </CartProvider>
     </DeliveryProvider>

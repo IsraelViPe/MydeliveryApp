@@ -67,20 +67,20 @@ export default function OrderDetailsComp({ prefix }) {
       { !isLoading && (
         <div>
           <table>
-            <th data-testid={ `${prefix}element-order-details-label-order-id` }>
+            <th data-testid={ `${prefix()}element-order-details-label-order-id` }>
               Pedido
               {' '}
               { order?.id }
             </th>
-            <th data-testid={ `${prefix}element-order-details-label-seller-name` }>
+            <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
               {order?.seller.name}
             </th>
-            <th data-testid={ `${prefix}element-order-details-label-order-date` }>
+            <th data-testid={ `${prefix()}element-order-details-label-order-date` }>
               {formatDate(order?.saleDate)}
             </th>
             <th
               data-testid={
-                `${prefix}element-order-details-label-delivery-status${idOrder}`
+                `${prefix()}element-order-details-label-delivery-status${idOrder}`
               }
             >
               {order?.status}
@@ -135,7 +135,9 @@ export default function OrderDetailsComp({ prefix }) {
           <button type="button">
             TOTAL: R$
             {' '}
-            <span data-testid={ `${prefix}element-order-total-price` }>{totalCart}</span>
+            <span data-testid={ `${prefix()}element-order-total-price` }>
+              {totalCart}
+            </span>
           </button>
         </div>
       )}

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import OrderCard from './OrderCard';
-import { getOrderById } from '../Services/RequestAPI';
+import { getOrdersBySellerId } from '../Services/RequestAPI';
 
-export default function CostumerOrders() {
+export default function SellerOrders() {
   const history = useHistory();
   const [orders, setOrders] = useState([]);
   const userData = JSON.parse(localStorage.getItem('user'));
@@ -11,7 +11,7 @@ export default function CostumerOrders() {
 
   useEffect(() => {
     async function fetchData() {
-      const { data } = await getOrderById(token);
+      const { data } = await getOrdersBySellerId(token);
       setOrders(data);
     }
     fetchData();
@@ -22,10 +22,11 @@ export default function CostumerOrders() {
       { orders.length > 0 && orders.map((order, i) => (
         <button
           type="button"
-          onClick={ () => history.push(`/customer/orders/${order.id}`) }
+          onClick={ () => history.push(`/seller/orders/${order.id}`) }
           key={ `order-${i}` }
         >
           <OrderCard order={ order } role={ role } key={ `order-${i}` } />
+          <p>{ `${order.deliveryAddress},${order.deliveryNumber}` }</p>
         </button>
       ))}
       { orders.length === 0 && (<h4>Não há pedidos</h4>) }

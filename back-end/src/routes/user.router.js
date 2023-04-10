@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/sellers', UserController.getAllSellers);
 router.get('/:id', UserController.getUserById);
-router.get('/sellers/orders', verifyToken, SalesController.getSalesBySeller);
+router.get('/seller/orders', verifyToken, SalesController.getSalesBySeller);
 router.get('/customer/orders', verifyToken, SalesController.getSalesByCustomer);
 
 module.exports = router;
