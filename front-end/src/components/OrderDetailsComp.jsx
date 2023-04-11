@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
-// import CartContext from '../context/CartContext';
 import OrderDetailsCard from './OrderDetailsCard';
-// import { totalValue } from '../utils/localstorage';
 import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import formatDate from '../utils/formatDate';
 
 export default function OrderDetailsComp({ prefix }) {
-  // const { totalCart, newValue } = useContext(CartContext);
   const [totalCart, setTotalCart] = useState();
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +43,6 @@ export default function OrderDetailsComp({ prefix }) {
   };
 
   useEffect(() => {
-    // newValue(totalValue());
     async function fetchData() {
       const { data } = await getOrderDetailById(idOrder, token);
       setOrder(data);
@@ -62,8 +58,6 @@ export default function OrderDetailsComp({ prefix }) {
       setErrorMsg(response?.data.message);
     }
   }, []);
-
-  console.log(order);
 
   return (
     <div>
