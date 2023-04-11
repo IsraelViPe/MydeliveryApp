@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, useHistory } from 'react-router-dom';
-import CartContext from '../context/CartContext';
+// import CartContext from '../context/CartContext';
 import OrderDetailsCard from './OrderDetailsCard';
-import { totalValue } from '../utils/localstorage';
+// import { totalValue } from '../utils/localstorage';
 import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import formatDate from '../utils/formatDate';
 
 export default function OrderDetailsComp({ prefix }) {
-  const { totalCart, newValue } = useContext(CartContext);
+  // const { totalCart, newValue } = useContext(CartContext);
+  const [totalCart, setTotalCart] = useState();
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -18,12 +19,17 @@ export default function OrderDetailsComp({ prefix }) {
 
   const { id: idOrder } = useParams();
   const { token } = JSON.parse(localStorage.getItem('user'));
-  const disablePreparing = (
-    order?.status === 'Pendente'
-   || order?.status === 'Em Trânsito'
-  || order?.status === 'Entregue');
+  const disablePreparing = (order?.status !== 'Pendente');
 
   const disableDispatch = order?.status !== 'Preparando';
+
+  const calculateTotalCart = (products) => {
+    const totalVal = products.reduce((acc, item) => {
+      acc += +item.subTotal;
+      return acc;
+    }, 0);
+    return totalVal.toFixed(2).replace('.', ',');
+  };
 
   const updateStatus = async ({ target: { id } }) => {
     const status = id;
@@ -40,10 +46,11 @@ export default function OrderDetailsComp({ prefix }) {
   };
 
   useEffect(() => {
-    newValue(totalValue());
+    // newValue(totalValue());
     async function fetchData() {
       const { data } = await getOrderDetailById(idOrder, token);
       setOrder(data);
+      setTotalCart(calculateTotalCart(data.products));
     }
     try {
       fetchData();
@@ -67,20 +74,20 @@ export default function OrderDetailsComp({ prefix }) {
       { !isLoading && (
         <div>
           <table>
-            <th data-testid={ `${prefix()}element-order-details-label-order-id` }>
+            <th data-testid={ `${prefix}element-order-details-label-order-id` }>
               Pedido
               {' '}
               { order?.id }
             </th>
-            <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
+            <th data-testid={ `${prefix}element-order-details-label-seller-name` }>
               {order?.seller.name}
             </th>
-            <th data-testid={ `${prefix()}element-order-details-label-order-date` }>
+            <th data-testid={ `${prefix}element-order-details-label-order-date` }>
               {formatDate(order?.saleDate)}
             </th>
             <th
               data-testid={
-                `${prefix()}element-order-details-label-delivery-status${idOrder}`
+                `${prefix}element-order-details-label-delivery-status${idOrder}`
               }
             >
               {order?.status}
@@ -92,7 +99,7 @@ export default function OrderDetailsComp({ prefix }) {
                   data-testid={ `${prefix}button-delivery-check` }
                   type="button"
                   id="Entregue"
-                  // disabled={ order?.status !== 'Em trânsito' }
+                  disabled={ order?.status !== 'Em Trânsito' }
                   onClick={ updateStatus }
                 >
                   MARCAR COMO ENTREGUE
@@ -135,7 +142,7 @@ export default function OrderDetailsComp({ prefix }) {
           <button type="button">
             TOTAL: R$
             {' '}
-            <span data-testid={ `${prefix()}element-order-total-price` }>
+            <span data-testid={ `${prefix}element-order-total-price` }>
               {totalCart}
             </span>
           </button>
