@@ -1,0 +1,23 @@
+@charset 'UTF-8' ;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: inherit;
+}
+
+body > div {
+  height: inherit;
+}
+
+main {
+  height: inherit;
+}
