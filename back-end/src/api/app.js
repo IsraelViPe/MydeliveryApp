@@ -15,6 +15,7 @@ app.use('/products', require('../routes/product.router'));
 app.use('/sales', require('../routes/sale.router'));
 app.use('/customer/orders', require('../routes/order.router'));
 app.use('/user', require('../routes/user.router'));
+app.use('/admin/manage', require('../routes/manage.router'));
 app.use(require('../middlewares/errorHandler'));
 
 module.exports = app;
