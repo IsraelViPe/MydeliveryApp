@@ -9,6 +9,7 @@ import Checkout from './pages/CustomerCheckout/Checkout';
 import Orders from './pages/Orders/Orders';
 import CartProvider from './context/CartProvider';
 import OrderDetails from './pages/OrderDetails.js/OrderDetails';
+import SellerOrderDetails from './pages/SellersOrderDetails/SellerOrderDetails';
 import SellerOrders from './pages/SellerOrders/SellerOrders';
 
 export default function App() {
@@ -23,8 +24,8 @@ export default function App() {
           <Route exact path="/customer/checkout" component={ Checkout } />
           <Route exact path="/customer/orders" component={ Orders } />
           <Route exact path="/customer/orders/:id" component={ OrderDetails } />
+          <Route exact path="/seller/orders/:id" component={ SellerOrderDetails } />
           <Route exact path="/seller/orders" component={ SellerOrders } />
-          <Route exact path="/seller/orders/:id" component={ OrderDetails } />
         </Switch>
       </CartProvider>
     </DeliveryProvider>

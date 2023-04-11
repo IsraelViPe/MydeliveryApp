@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import CartContext from '../context/CartContext';
-import Cart from './Cart';
+import OrderDetailsCard from './OrderDetailsCard';
 import { getCart, totalValue } from '../utils/localstorage';
 import { getSellers, postOrder } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
@@ -71,7 +71,7 @@ export default function CustomerCheckout() {
           </thead>
           <tbody>
             { cart.map((item, i) => (
-              <Cart
+              <OrderDetailsCard
                 key={ i }
                 item={ item }
                 id={ i }

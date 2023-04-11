@@ -1,30 +1,39 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import CartContext from '../context/CartContext';
-import Cart from './Cart';
-import { totalValue } from '../utils/localstorage';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useParams, useHistory } from 'react-router-dom';
+import OrderDetailsCard from './OrderDetailsCard';
 import { updateOrderStatus, getOrderDetailById } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import formatDate from '../utils/formatDate';
 
-export default function OrderDetailsComp() {
-  const { totalCart, newValue } = useContext(CartContext);
+export default function OrderDetailsComp({ prefix }) {
+  const [totalCart, setTotalCart] = useState();
   const [order, setOrder] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const { id: idOrder } = useParams();
-  const { token, role } = JSON.parse(localStorage.getItem('user'));
+  const { location: { pathname } } = useHistory();
 
-  const prefix = () => {
-    if (role === 'customer') return 'customer_order_details__';
-    if (role === 'seller') return 'seller_order_details__';
+  const { id: idOrder } = useParams();
+  const { token } = JSON.parse(localStorage.getItem('user'));
+  const disablePreparing = (order?.status !== 'Pendente');
+
+  const disableDispatch = order?.status !== 'Preparando';
+
+  const calculateTotalCart = (products) => {
+    const totalVal = products.reduce((acc, item) => {
+      acc += +item.subTotal;
+      return acc;
+    }, 0);
+    return totalVal.toFixed(2).replace('.', ',');
   };
 
-  const updateStatus = async () => {
+  const updateStatus = async ({ target: { id } }) => {
+    const status = id;
+
     try {
       setErrorMsg(null);
-      const { data } = await updateOrderStatus(idOrder, { status: 'Entregue' }, token);
+      const { data } = await updateOrderStatus(idOrder, { status }, token);
       setOrder((prevOrder) => ({ ...prevOrder, status: data.status }));
     } catch (e) {
       setIsLoading(false);
@@ -34,10 +43,10 @@ export default function OrderDetailsComp() {
   };
 
   useEffect(() => {
-    newValue(totalValue());
     async function fetchData() {
       const { data } = await getOrderDetailById(idOrder, token);
       setOrder(data);
+      setTotalCart(calculateTotalCart(data.products));
     }
     try {
       fetchData();
@@ -59,37 +68,64 @@ export default function OrderDetailsComp() {
       { !isLoading && (
         <div>
           <table>
-            <th data-testid={ `${prefix()}element-order-details-label-order-id` }>
+            <th data-testid={ `${prefix}element-order-details-label-order-id` }>
               Pedido
               {' '}
               { order?.id }
             </th>
-            <th data-testid={ `${prefix()}element-order-details-label-seller-name` }>
+            <th data-testid={ `${prefix}element-order-details-label-seller-name` }>
               {order?.seller.name}
             </th>
-            <th data-testid={ `${prefix()}element-order-details-label-order-date` }>
+            <th data-testid={ `${prefix}element-order-details-label-order-date` }>
               {formatDate(order?.saleDate)}
             </th>
             <th
               data-testid={
-                `${prefix()}element-order-details-label-delivery-status${idOrder}`
+                `${prefix}element-order-details-label-delivery-status${idOrder}`
               }
             >
               {order?.status}
             </th>
             <th>
-              <button
-                data-testid={ `${prefix()}button-delivery-check` }
-                type="button"
-                disabled
-                onClick={ updateStatus }
-              >
-                MARCAR COMO ENTREGUE
-              </button>
+              {pathname.includes('/customer/orders/')
+              && (
+                <button
+                  data-testid={ `${prefix}button-delivery-check` }
+                  type="button"
+                  id="Entregue"
+                  disabled={ order?.status !== 'Em Trânsito' }
+                  onClick={ updateStatus }
+                >
+                  MARCAR COMO ENTREGUE
+                </button>
+              )}
+              { pathname.includes('/seller/orders')
+                && (
+                  <>
+                    <button
+                      data-testid={ `${prefix}button-preparing-check` }
+                      type="button"
+                      id="Preparando"
+                      disabled={ disablePreparing }
+                      onClick={ updateStatus }
+                    >
+                      PREPARANDO PEDIDO
+                    </button>
+                    <button
+                      data-testid={ `${prefix}button-dispatch-check` }
+                      type="button"
+                      disabled={ disableDispatch }
+                      id="Em Trânsito"
+                      onClick={ updateStatus }
+                    >
+                      SAIU PARA ENTREGA
+                    </button>
+                  </>
+                ) }
             </th>
             <tbody>
               { order?.products.map((item, i) => (
-                <Cart
+                <OrderDetailsCard
                   key={ i }
                   item={ item }
                   id={ i }
@@ -100,7 +136,7 @@ export default function OrderDetailsComp() {
           <button type="button">
             TOTAL: R$
             {' '}
-            <span data-testid={ `${prefix()}element-order-total-price` }>
+            <span data-testid={ `${prefix}element-order-total-price` }>
               {totalCart}
             </span>
           </button>
@@ -110,3 +146,7 @@ export default function OrderDetailsComp() {
     </div>
   );
 }
+
+OrderDetailsComp.propTypes = {
+  prefix: PropTypes.string,
+}.isRequired;
