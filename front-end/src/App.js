@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import DeliveryProvider from './context/deliveryProvider';
 import Register from './pages/Register/Register';
-import './App.css';
 import Login from './pages/Login/Login';
 import Products from './pages/Products/Products';
 import Checkout from './pages/CustomerCheckout/Checkout';

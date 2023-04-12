@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { addUser, getUserList } from '../Services/RequestAPI';
+import { addUser, getUserList, deleteUser } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import UserCard from './UserCard';
 
@@ -75,17 +75,22 @@ export default function AdminManagerComp() {
     } catch (error) {
       const { response } = error;
       setErrorMsg(response.data.message);
+    } finally {
+      setEmail('');
+      setName('');
+      setPassword('');
     }
   };
 
   const handleDeleteUser = async ({ target: { id } }) => {
+    console.log(id);
     try {
       await deleteUser(id, token);
       setErrorMsg(null);
       await loadUsers();
     } catch (error) {
       const { response } = error;
-      setErrorMsg(response.data.message);
+      setErrorMsg(response?.data.message);
     }
   };
 

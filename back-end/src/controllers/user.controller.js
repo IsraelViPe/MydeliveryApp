@@ -9,8 +9,13 @@ const getAllSellers = async (_req, res, _next) => {
   return res.status(codes.OK).json(response);
 };
 
+const getAllNonAdmin = async (_req, res, _next) => {
+  const response = await UserService.getAllNonAdmin();
+
+  return res.status(codes.OK).json(response);
+};
+
 const getUserById = async (req, res, next) => {
-  console.log('aqui');
   const { id } = req.params;
 
   const response = await UserService.getUserById(id);
@@ -23,34 +28,12 @@ const getUserById = async (req, res, next) => {
   return res.status(codes.OK).json(response);
 };
 
-// const getAllUsers = async (_req, res, next) => {
-//   try {
-//     const response = await User.findAll({ where: { role: { [Op.ne]: 'administrator' } } });
-//     res.status(codes.OK).json(response);
-//   } catch (e) {
-//     next(e);
-//   }
-// };
+const deleteUserById = async (req, res, _next) => {
+  const { id } = req.params;
 
-//   const AddUser = async (req, res, next) => {
-//     try {
-//       const response = await User.create(req.body);
-//       res.status(codes.CREATED).json(response);
-//     } catch (e) {
-//       next(e);
-//     }
-//   };
+  await UserService.deleteUserById(id);
 
-//   const DeleteUser = async (req, res, next) => {
-//     const { id } = req.params;
-//     try {
-//       const response = await User.destroy({
-//         where: { id },
-//       });
-//       res.status(codes.OK).json(response);
-//     } catch (e) {
-//       next(e);
-//     }
-//   };
+  return res.status(codes.OK).json({ message: 'Usuário deletado com sucesso' });
+};
 
-module.exports = { getAllSellers, getUserById };
+module.exports = { getAllSellers, getAllNonAdmin, getUserById, deleteUserById };
