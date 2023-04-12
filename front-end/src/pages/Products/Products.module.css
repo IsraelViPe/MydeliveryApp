@@ -28,7 +28,6 @@
 }
 
 .inputProductCard {
-  -moz-appearance: textfield;
   appearance: textfield;
   background-color: #e4edff;
   border: 0;
@@ -90,12 +89,3 @@
 .inputProductCard::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-
-/* input[ type = 'number' ]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-} */
-
-/* input[ type = 'number' ] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-} */
