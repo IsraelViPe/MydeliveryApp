@@ -77,15 +77,16 @@ export async function addUser(body, token) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.post('/user/admin', body, config);
+  const response = await api.post('/admin', body, config);
   return response;
 }
 
 export async function getUserList(token) {
+  console.log(token);
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.get('/user/admin', {}, config);
+  const response = await api.get('/admin', {}, config);
   return response;
 }
 
@@ -93,6 +94,6 @@ export async function deleteUser(id, token) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.delete(`/user/admin/:${id}`, {}, config);
+  const response = await api.delete(`/admin/:${id}`, {}, config);
   return response;
 }
