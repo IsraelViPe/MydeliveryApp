@@ -1,16 +1,17 @@
-import { useState, useEffect, useContext } from 'react';
-import deliveryContext from '../context/deliveryContext';
-import { addUser } from '../Services/RequestAPI';
+import { useState, useEffect } from 'react';
+import { addUser, getUserList } from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
 import UserCard from './UserCard';
 
 export default function AdminManagerComp() {
+  const [errorMsg, setErrorMsg] = useState(null);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState();
   const [password, setPassword] = useState('');
   const [buttonDisable, setButtonDisable] = useState(true);
-  const { users, setUsers, errorMsg, isLoading } = useContext(deliveryContext);
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const MIN_CHAR = 6;
   const NAME_CHAR = 12;
@@ -19,6 +20,22 @@ export default function AdminManagerComp() {
   const checkName = (n) => n.length >= NAME_CHAR;
   const checkPassword = (pass) => pass.length >= MIN_CHAR;
   const checkEmail = (mail) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await getUserList(token);
+      setUsers(data);
+    }
+    try {
+      fetchData();
+      setErrorMsg(null);
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      const { response } = e;
+      setErrorMsg(response?.data.message);
+    }
+  });
 
   const checkButton = () => {
     if (checkName(name) && checkPassword(password) && checkEmail(email)) {
@@ -32,6 +49,19 @@ export default function AdminManagerComp() {
     checkButton();
   }, [name, password, email]);
 
+  const loadUsers = async () => {
+    try {
+      const { data } = await getUserList(token);
+      setUsers(data);
+      setErrorMsg(null);
+    } catch (error) {
+      const { response } = error;
+      setErrorMsg(response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleAddUser = async () => {
     const body = {
       name, email, password, role,
@@ -39,6 +69,7 @@ export default function AdminManagerComp() {
     try {
       await addUser(body, token);
       setErrorMsg(null);
+      await loadUsers();
     } catch (error) {
       const { response } = error;
       setErrorMsg(response.data.message);
@@ -47,8 +78,9 @@ export default function AdminManagerComp() {
 
   const handleDeleteUser = async ({ target: { id } }) => {
     try {
-      await addUser(id, token);
+      await deleteUser(id, token);
       setErrorMsg(null);
+      await loadUsers();
     } catch (error) {
       const { response } = error;
       setErrorMsg(response.data.message);
@@ -129,16 +161,18 @@ export default function AdminManagerComp() {
           <th>Tipo</th>
           <th>Excluir</th>
         </thead>
-        <tbody>
-          { users.map((item, id) => (
-            <UserCard
-              key={ item.id }
-              item={ item }
-              id={ id }
-              onClick={ handleDeleteUser }
-            />
-          ))}
-        </tbody>
+        { !isLoading && (
+          <tbody>
+            { users.map((item, id) => (
+              <UserCard
+                key={ item.id }
+                item={ item }
+                id={ id }
+                onClick={ handleDeleteUser }
+              />
+            ))}
+          </tbody>
+        ) }
       </table>
     </div>
   );

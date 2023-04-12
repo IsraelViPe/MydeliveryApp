@@ -77,6 +77,22 @@ export async function addUser(body, token) {
   const config = {
     headers: { Authorization: token },
   };
-  const response = await api.post('/use/admin', body, config);
+  const response = await api.post('/user/admin', body, config);
+  return response;
+}
+
+export async function getUserList(token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get('/user/admin', {}, config);
+  return response;
+}
+
+export async function deleteUser(id, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.delete(`/user/admin/:${id}`, {}, config);
   return response;
 }
