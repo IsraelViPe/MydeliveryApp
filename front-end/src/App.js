@@ -11,6 +11,7 @@ import OrderDetails from './pages/OrderDetails.js/OrderDetails';
 import SellerOrderDetails from './pages/SellersOrderDetails/SellerOrderDetails';
 import SellerOrders from './pages/SellerOrders/SellerOrders';
 import './styles/global.css';
+import AdiminManager from './pages/AdminManager/AdminManager';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <Route exact path="/customer/orders/:id" component={ OrderDetails } />
           <Route exact path="/seller/orders/:id" component={ SellerOrderDetails } />
           <Route exact path="/seller/orders" component={ SellerOrders } />
+          <Route exact path="/admin/manage" component={ AdiminManager } />
         </Switch>
       </CartProvider>
     </DeliveryProvider>

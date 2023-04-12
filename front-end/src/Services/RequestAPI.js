@@ -72,3 +72,28 @@ export async function updateOrderStatus(id, status, token) {
   const response = await api.put(`/sales/update/status/${id}`, status, config);
   return response;
 }
+
+export async function addUser(body, token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.post('/user/admin/manage', body, config);
+  return response;
+}
+
+export async function getUserList(token) {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.get('/user/admin/manage', config);
+  return response;
+}
+
+export async function deleteUser(id, token) {
+  console.log('aqui');
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await api.delete(`/user/admin/manage/${id}`, config);
+  return response;
+}
