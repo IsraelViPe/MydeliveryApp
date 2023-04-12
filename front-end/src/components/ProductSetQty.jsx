@@ -71,7 +71,7 @@ function ProductSetQty({ product }) {
   }
 
   return (
-    <div>
+    <div className={ styleProducts.containerInput }>
       <button
         type="button"
         data-testid={ `customer_products__button-card-add-item-${product.id}` }

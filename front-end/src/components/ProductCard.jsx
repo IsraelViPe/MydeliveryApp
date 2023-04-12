@@ -6,28 +6,30 @@ function ProductCard(props) {
   const { product } = props;
 
   return (
-    <div className={ styleProducts.containerProductCard }>
-      <div key={ product.id }>
-        <p
-          className={ styleProducts.textPrice }
-          data-testid={ `customer_products__element-card-price-${product.id}` }
-        >
-          {`R$ ${(product.price).replace(/\./, ',')}`}
-        </p>
+    <div
+      className={ styleProducts.containerProductCard }
+      key={ product.id }
+    >
+      <p
+        className={ styleProducts.textPrice }
+        data-testid={ `customer_products__element-card-price-${product.id}` }
+      >
+        {`R$ ${(product.price).replace(/\./, ',')}`}
+      </p>
 
-        <img
-          className={ styleProducts.imgProduct }
-          src={ product.urlImage }
-          alt={ product.name }
-          data-testid={ `customer_products__img-card-bg-image-${product.id}` }
-        />
+      <img
+        className={ styleProducts.imgProduct }
+        src={ product.urlImage }
+        alt={ product.name }
+        data-testid={ `customer_products__img-card-bg-image-${product.id}` }
+      />
 
-        <p
-          data-testid={ `customer_products__element-card-title-${product.id}` }
-        >
-          {product.name}
-        </p>
-      </div>
+      <p
+        className={ styleProducts.nameProduct }
+        data-testid={ `customer_products__element-card-title-${product.id}` }
+      >
+        {product.name}
+      </p>
       <ProductSetQty product={ product } />
     </div>
   );

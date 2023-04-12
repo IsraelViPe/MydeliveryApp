@@ -1,51 +1,57 @@
 .containerProductList {
-  margin-top: 50px;
+  align-items: center;
   display: grid;
-  /* grid-template-columns: max-content; */
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 400px 400px 400px 400px;
+  justify-content: center;
   justify-items: center;
-  justify-content: stretch;
-  align-items: stretch;
+  margin-top: 50px;
 }
 
 .containerProductCard {
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px 1px gray;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 70%;
   height: 90%;
-  padding: 20px 20px;
-  padding-top: 40px;
-  box-shadow: 1px 1px 5px 1px gray;
-  border-radius: 5px;
+  justify-content: center;
+  padding: 20px 0 20px 0;
+  width: 70%;
+}
+
+.containerInterno {
+  align-items: center;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
 }
 
 .inputProductCard {
-  font-family: "Roboto", sans-serif;
-  font-size: 17px;
-  font-weight: 600;
-  color: #000000;
-  outline: 0;
-  width: 70%;
   background-color: #e4edff;
   border: 0;
-  margin: 5px 0 15px;
-  padding: 15px 15px;
   border-radius: 5px;
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 5px 0 15px;
+  outline: 0;
+  padding: 15px;
+  text-align: center;
+  width: 20%;
 }
 
 .buttonProductCard {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
   background: #1962ff;
-  width: 15%;
   border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 15px;
-  cursor: pointer;
   border-radius: 5px;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 15px;
+  margin: 5px 0 15px;
+  padding: 15px;
+  text-transform: uppercase;
+  width: 15%;
 }
 
 .buttonProductCard:hover {
@@ -53,17 +59,38 @@
 }
 
 .textPrice {
-  color: #ffffff;
   background-color: #000000;
-  opacity: 0.5;
-  width: 4vw;
   border-radius: 5px;
+  color: #ffffff;
+  font-size: 20px;
+  opacity: 0.5;
   padding: 3px;
   text-align: center;
-  font-size: 20px
+  width: 4vw;
 }
 
 .imgProduct {
-  width: 150px;
   height: 150px;
+  width: 150px;
+}
+
+.nameProduct {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.containerInput {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+
+input[type=number]::-webkit-inner-spin-button { 
+  -webkit-appearance: none;
+}
+
+input[type=number] { 
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
