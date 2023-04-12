@@ -7,7 +7,7 @@ export default function AdminManagerComp() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState();
+  const [role, setRole] = useState('administrator');
   const [password, setPassword] = useState('');
   const [buttonDisable, setButtonDisable] = useState(true);
   const [users, setUsers] = useState([]);
@@ -130,7 +130,7 @@ export default function AdminManagerComp() {
             data-testid="admin_manage__input-password"
             className="input-login inputPassWord"
             placeholder="Password"
-            onChange={ () => setPassword(e.target.value) }
+            onChange={ (e) => setPassword(e.target.value) }
           />
         </label>
         <label htmlFor="password-input">

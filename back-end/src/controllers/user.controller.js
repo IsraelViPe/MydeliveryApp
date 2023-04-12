@@ -1,5 +1,6 @@
+const { Op } = require('sequelize');
 const UserService = require('../services/user.service');
-const User = require('../database/models');
+const { User } = require('../database/models');
 const { codes } = require('../utils/errorMap');
 
 const getAllSellers = async (_req, res, _next) => {
@@ -23,7 +24,7 @@ const getUserById = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const response = await User.findAll();
+    const response = await User.findAll({ where: { role: { [Op.ne]: 'administrator' } } });
     res.status(codes.OK).json(response);
   } catch (e) {
     next(e);
