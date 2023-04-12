@@ -24,9 +24,9 @@ const getUserById = async (req, res, _next) => {
 const deleteUserById = async (req, res, _next) => {
   const { id } = req.params;
 
-  const { message } = await UserService.deleteUserById(id);
+  await UserService.deleteUserById(id);
 
-  return res.status(codes.OK).json({ message });
+  return res.status(codes.OK).json({ message: 'Usuário deletado com sucesso' });
 };
 
 module.exports = { getAllSellers, getAllNonAdmin, getUserById, deleteUserById };

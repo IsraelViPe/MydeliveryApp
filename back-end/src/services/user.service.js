@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
-const { User } = require('../database/models');
+const { User, SaleProduct } = require('../database/models');
 const { mapError } = require('../utils/errorMap');
+const { getSalesByCustomer } = require('./sales.service');
 
 const getAllSellers = async () => {
   const sellers = await User.findAll({
@@ -29,32 +30,21 @@ const getUserById = async (id) => {
 };
 
 const deleteUserById = async (id) => {
-  const deletedUser = await User.destroy({ 
-    where: { id },
-    cascade: true,
-  });
+  const sales = await getSalesByCustomer(id);
 
-  if (deletedUser === 0) return mapError('Erro ao deletar usuário');
-
-  return { message: 'Usuário deletado com sucesso' };
+  if (!sales) {
+    await User.destroy({ where: { id } });
+  } else {
+    const salesIds = sales.message.map((sale) => sale.id);
+  
+    const promises = [
+      SaleProduct.destroy({ where: { saleId: salesIds } }),
+      sales.message.map((sale) => sale.destroy()),
+      User.destroy({ where: { id } }),
+    ];
+  
+    await Promise.all(promises);
+  }
 };
-
-// const deleteUserById = async (reqId) => {
-//   const sales = await Sale.findAll({ where: { userId: reqId } });
-//   const salesIds = sales.map((sale) => sale.id);
-
-//   const promises = [];
-
-//   if (salesIds.length > 0) {
-//     promises.push(SalesProducts.destroy({ where: { saleId: salesIds } }));
-//     promises.push(Sale.destroy({ where: { userId: reqId } }));
-//   }
-
-//   promises.push(User.destroy({ where: { id: reqId } }));
-
-//   await Promise.all(promises);
-
-//   return true;
-// };
 
 module.exports = { getAllSellers, getAllNonAdmin, getUserById, deleteUserById };
