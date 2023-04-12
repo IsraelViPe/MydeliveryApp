@@ -21,6 +21,8 @@ export default function AdminManagerComp() {
   const checkPassword = (pass) => pass.length >= MIN_CHAR;
   const checkEmail = (mail) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail);
 
+  console.log(users);
+
   useEffect(() => {
     async function fetchData() {
       const { data } = await getUserList(token);
@@ -35,7 +37,7 @@ export default function AdminManagerComp() {
       const { response } = e;
       setErrorMsg(response?.data.message);
     }
-  });
+  }, []);
 
   const checkButton = () => {
     if (checkName(name) && checkPassword(password) && checkEmail(email)) {
@@ -163,7 +165,7 @@ export default function AdminManagerComp() {
         </thead>
         { !isLoading && (
           <tbody>
-            { users.map((item, id) => (
+            { users.length && users.map((item, id) => (
               <UserCard
                 key={ item.id }
                 item={ item }

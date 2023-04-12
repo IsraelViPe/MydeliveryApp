@@ -7,10 +7,15 @@ const getAllSellers = async (_req, res, _next) => {
   return res.status(codes.OK).json(response);
 };
 
-const getUserById = async (req, res, _next) => {
+const getUserById = async (req, res, next) => {
   const { id } = req.params;
 
   const response = await UserService.getUserById(id);
+
+  if (response.statusCode) {
+    next(response);
+    return;
+  }
 
   return res.status(codes.OK).json(response);
 };

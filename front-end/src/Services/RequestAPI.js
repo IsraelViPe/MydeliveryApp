@@ -86,6 +86,7 @@ export async function getUserList(token) {
     headers: { Authorization: token },
   };
   const response = await api.get('/user/admin', {}, config);
+  console.log(response);
   return response;
 }
 
