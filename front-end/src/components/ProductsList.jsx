@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { getAllProducts, verifyToken } from '../Services/RequestAPI';
 import ProductCard from './ProductCard';
 import CheckoutButtonValue from './CheckoutButtonValue';
+import styleProducts from '../pages/Products/Products.module.css';
 
 export default function ProductsList() {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,7 @@ export default function ProductsList() {
   }, []);
 
   return (
-    <main>
+    <main className={ styleProducts.containerProductList }>
       { products.length > 0 && products.map((product, i) => (
         <ProductCard product={ product } key={ `prod-${i}` } />
       ))}

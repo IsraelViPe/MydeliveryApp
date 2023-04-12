@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useContext, useEffect } from 'react';
 import { getCart } from '../utils/localstorage';
 import CartContext from '../context/CartContext';
+import styleProducts from '../pages/Products/Products.module.css';
 
 function ProductSetQty({ product }) {
   const { setCart } = useContext(CartContext);
@@ -70,7 +71,7 @@ function ProductSetQty({ product }) {
   }
 
   return (
-    <div style={ { display: 'flex', alignItems: 'center', height: '100%' } }>
+    <div>
       <button
         type="button"
         data-testid={ `customer_products__button-card-add-item-${product.id}` }
@@ -78,6 +79,7 @@ function ProductSetQty({ product }) {
         data-productid={ product.id }
         data-unitprice={ product.price }
         onClick={ inc }
+        className={ styleProducts.buttonProductCard }
       >
         +
       </button>
@@ -91,6 +93,7 @@ function ProductSetQty({ product }) {
         data-testid={ `customer_products__input-card-quantity-${product.id}` }
         data-productid={ product.id }
         data-unitprice={ product.price }
+        className={ styleProducts.inputProductCard }
       />
 
       <button
@@ -100,6 +103,7 @@ function ProductSetQty({ product }) {
         data-productid={ product.id }
         data-unitprice={ product.price }
         onClick={ dec }
+        className={ styleProducts.buttonProductCard }
       >
         -
       </button>
