@@ -10,6 +10,7 @@ import CartProvider from './context/CartProvider';
 import OrderDetails from './pages/OrderDetails.js/OrderDetails';
 import SellerOrderDetails from './pages/SellersOrderDetails/SellerOrderDetails';
 import SellerOrders from './pages/SellerOrders/SellerOrders';
+import './styles/global.css';
 
 export default function App() {
   return (
