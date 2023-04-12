@@ -85,7 +85,3 @@
   display: flex;
   justify-content: center;
 }
-
-.inputProductCard::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}

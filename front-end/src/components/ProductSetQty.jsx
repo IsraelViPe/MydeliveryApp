@@ -85,7 +85,7 @@ function ProductSetQty({ product }) {
       </button>
 
       <input
-        type="number"
+        type="text"
         min={ 0 }
         onChange={ ({ target: { value } }) => upCart(+value) }
         value={ undefined }
