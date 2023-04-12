@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import postLogin from '../Services/RequestAPI';
 import ErrorMessage from './ErrorMessage';
+import styleLogin from '../pages/Login/Login.module.css';
+import iconeCanecas from '../pages/Login/icone-caneca.png';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -32,7 +34,6 @@ export default function LoginForm() {
     try {
       setLoginError(false);
       const { data } = await postLogin({ email, password });
-      console.log(data);
       localStorage.setItem('user', JSON.stringify({
         name: data.name,
         email: data.email,
@@ -61,9 +62,10 @@ export default function LoginForm() {
   }
 
   return (
-    <div>
+    <div className={ styleLogin.formLogin }>
+      <img src={ iconeCanecas } alt="" />
       <form>
-        <label htmlFor="email">
+        <label htmlFor="email" className={ styleLogin.labelForm }>
           Usuário:
           <input
             type="email"
@@ -74,7 +76,7 @@ export default function LoginForm() {
             data-testid="common_login__input-email"
           />
         </label>
-        <label htmlFor="password">
+        <label htmlFor="password" className={ styleLogin.labelForm }>
           Senha:
           <input
             type="password"
